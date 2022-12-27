@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajax
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-7">
+			<p id="mes"></p>
+			<h1>Ma premiere application symfony avec ajax</h1>
+			<div id="dataresult"></div>
+			<form autocomplete="off" method="POST" id="quickForm" class="form-inline">
+				<input type="text" name="input" id="input" class="form-control" placeholder="Nom...">
+				<input type="text" name="age" id="age" class="form-control" placeholder="Age...">
+				<input type="text" name="contact" id="contact" class="form-control" placeholder="Contact...">
+				<button type="submit" id="click" class='btn btn-success'>Valder</button>
+			</form>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-6">
+			<table class="table table-bordered">
+					<tr>
+						<td>ID</td>
+						<td>Nom</td>
+						<td>Age</td>
+						<td>Contact</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>Tita</td>
+						<td>20 ans</td>
+						<td>699-34-56-09</td>
+					</tr>
+			</table>	
+		</div>
+	</div>
+
+{% endblock %}
