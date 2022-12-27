@@ -26,15 +26,19 @@ class AjaxEtSymfonyController extends AbstractController
     public function valider(Request $request)
     {
         $input=$request->get('input');
-        //dd($input);
+        $age=$request->get('age');
+        $contact=$request->get('contact');
         if (isset($input) && !empty($input)) {
             return $this->json([
-                "message"=>"Vous avez validé le formulaire"
+                "message"=>"Vous avez validé le formulaire",
+                "nom"=>$input,
+                "age"=>$age,
+                "contact"=>$contact
             ]);
         }
         else {
             return $this->json([
-                "message"=>"Votre formulaire est vide"
+                "message"=>"Vous avez validé le formulaire"
             ]);
         }
         

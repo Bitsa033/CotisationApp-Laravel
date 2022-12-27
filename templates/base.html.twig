@@ -26,25 +26,26 @@
 		{% block body %}{% endblock %}
 		{% block javascripts %}
 			<script src="lib/jquery/jquery.min.js"></script>
-			{#{{<script src="js/navigation.js"></script>
-			
-						<script src="lib/jquery-validation/jquery.validate.min.js"></script>
-						<script src="lib/jquery-validation/additional-methods.min.js"></script>}}#}
 			{#{{ encore_entry_script_tags('app') }}#}
             <script>
                 $(document).ready(function() {
                     $("#click").click(function(e) {
                         e.preventDefault()
                         var input=$("#input").val()
+                        var age=$("#age").val()
+                        var contact=$("#contact").val()
                         if (input !="") {
                             $.ajax({
                                 url:"{{path('app_traiter')}}",
                                 method: "POST",
-                                data:{input:input},
+                                data:{input:input,age:age,contact:contact},
                                 success:function(data) {
-                                    $("#dataresult").html(data.message),
+                                    $("#dataresult").html(data.message)
+                                    $("#nom").html(data.nom)
+                                    $(".age").html(data.age)
+                                    $("#contact2").html(data.contact)
                                     $("#dataresult").css("display","block")
-                                    console.log(data.message);
+                                    console.log(data.contact);
                                     $("#input").val("")
                                 },
                                 error:function(XMLHttpRequest,textStatus,errorThrown) {
