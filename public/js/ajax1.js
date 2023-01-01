@@ -58,3 +58,8 @@ $(function () {
     }
   });
 });
+
+// for (let index = 0; index < data.length; index++) {
+//   const element = data[index];
+  
+// }

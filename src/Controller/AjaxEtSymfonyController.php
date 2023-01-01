@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AjaxEtSymfonyController extends AbstractController
@@ -23,24 +24,24 @@ class AjaxEtSymfonyController extends AbstractController
     /**
      * @Route("traiter", name="app_traiter")
      */
-    public function valider(Request $request)
+    public function traiter(Request $request, SessionInterface $session)
     {
-        $input=$request->get('input');
-        $age=$request->get('age');
-        $contact=$request->get('contact');
-        if (isset($input) && !empty($input)) {
-            return $this->json([
-                "message"=>"Vous avez validé le formulaire",
-                "nom"=>$input,
-                "age"=>$age,
-                "contact"=>$contact
-            ]);
+        $nom=$request->get('input');
+        if (empty($nom)) {
+            return new Response('Remplissez vos champs');
         }
         else {
-            return $this->json([
-                "message"=>"Vous avez validé le formulaire"
-            ]);
+            return new Response($nom);
         }
-        
+    }
+    /**
+     * @Route("afficher", name="app_afficher")
+     */
+    public function afficher(Request $request, SessionInterface $session)
+    {
+        return $this->json([
+            "nom"=>"Amina",
+            "age"=>13
+        ]);
     }
 }

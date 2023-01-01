@@ -1,70 +1,78 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
-		{# Run `composer require symfony/webpack-encore-bundle`
-						           and uncomment the following Encore helpers to start using Symfony UX #}
-		{% block stylesheets %}
-			<link href="img/favicon.png" rel="icon">
-			<link
-			href="img/apple-touch-icon.png" rel="apple-touch-icon">
-			<!-- Bootstrap core CSS -->
-			<link
-			href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-			<!--external css-->
-			<link
-			href="lib/font-awesome/css/font-awesome.css" rel="stylesheet"/>
-		{#{{ encore_entry_link_tags('app') }}#}
-		{% endblock %}
 
-	</head>
-	<body>
-		{% block body %}{% endblock %}
-		{% block javascripts %}
-			<script src="lib/jquery/jquery.min.js"></script>
-			{#{{ encore_entry_script_tags('app') }}#}
-            <script>
-                $(document).ready(function() {
-                    $("#click").click(function(e) {
-                        e.preventDefault()
-                        var input=$("#input").val()
-                        var age=$("#age").val()
-                        var contact=$("#contact").val()
-                        if (input !="") {
-                            $.ajax({
-                                url:"{{path('app_traiter')}}",
-                                method: "POST",
-                                data:{input:input,age:age,contact:contact},
-                                success:function(data) {
-                                    $("#dataresult").html(data.message)
-                                    $("#nom").html(data.nom)
-                                    $(".age").html(data.age)
-                                    $("#contact2").html(data.contact)
-                                    $("#dataresult").css("display","block")
-                                    console.log(data.contact);
-                                    $("#input").val("")
-                                },
-                                error:function(XMLHttpRequest,textStatus,errorThrown) {
-                                    alert(textStatus)
-                                }
-                                
-                            })
-                        }else{
-                            // $("#dataresult").css("display","none")
-                            console.log("Votre formulaire est vide");
-                            $("#dataresult").html("Votre formulaire est vide")
-                        }
-                        
-                            
-                    })
-                    
-                })
-            </script>
-
+<head>
+	<meta charset="UTF-8">
+	<title>
+		{% block title %}Welcome!
 		{% endblock %}
-	</body>
+	</title>
+	{# Run `composer require symfony/webpack-encore-bundle`
+	and uncomment the following Encore helpers to start using Symfony UX #}
+	{% block stylesheets %}
+	<link href="img/favicon.png" rel="icon">
+	<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+	<!-- Bootstrap core CSS -->
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="dist/sweetalert.css" rel="stylesheet">
+	<!--external css-->
+	<link href="lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+	{#{{ encore_entry_link_tags('app') }}#}
+	{% endblock %}
+
+</head>
+
+<body>
+	{% block body %}{% endblock %}
+	{% block javascripts %}
+	<script src="lib/jquery/jquery.min.js"></script>
+	<script src="dist/sweetalert.min.js"></script>
+	{#{{ encore_entry_script_tags('app') }}#}
+	<script>
+		$(document).ready(function () {
+			$("#click").click(function (e) {
+				e.preventDefault()
+				var input = $('#input').val()
+				//swal(input)
+				$.ajax({
+					url: "{{path('app_traiter')}}",
+					method: "POST",
+					data: { input: input },
+					success: function (data) {
+						// 	$("#dataresult").html(data),
+						// 	$("#dataresult").css("display", "block")
+						console.log(data);
+						$('#input').val("")
+					},
+					// error: function (XMLHttpRequest, textStatus, errorThrown) {
+					// 	alert(textStatus)
+					// }
+
+				})
+
+			})
+
+		})
+		function data() {
+			$.ajax({
+				url: "{{path('app_afficher')}}",
+				method: "GET",
+				success: function (data) {
+					//swal(data.nom)
+					$("#dataresult").css("display", "block")
+					//console.log(data);
+
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					alert(textStatus)
+				}
+
+			})
+			//setTimeout(data, 1000)
+		}
+		data()
+	</script>
+	{% endblock %}
+</body>
+
 </html>
