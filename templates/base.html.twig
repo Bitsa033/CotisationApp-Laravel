@@ -58,13 +58,14 @@
 				url: "{{path('app_afficher')}}",
 				method: "GET",
 				success: function (data) {
-					//swal(data.nom)
-					$("#dataresult").css("display", "block")
-					//console.log(data);
+					//swal('',data.nom)
+					//$("#dataresult").css("display", "block")
+					console.log(data);
+					//$("#dataresult2").html(data)
 
 				},
 				error: function (XMLHttpRequest, textStatus, errorThrown) {
-					alert(textStatus)
+					//alert(textStatus)
 				}
 
 			})

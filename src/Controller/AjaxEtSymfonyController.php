@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
+use App\Repository\ClientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,11 +39,10 @@ class AjaxEtSymfonyController extends AbstractController
     /**
      * @Route("afficher", name="app_afficher")
      */
-    public function afficher(Request $request, SessionInterface $session)
+    public function afficher(ClientRepository $clientRepository)
     {
         return $this->json([
-            "nom"=>"Amina",
-            "age"=>13
+            "client"=>$clientRepository->findAll()
         ]);
     }
 }
