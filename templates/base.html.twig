@@ -32,21 +32,25 @@
 		$(document).ready(function () {
 			$("#click").click(function (e) {
 				e.preventDefault()
-				var input = $('#input').val()
-				//swal(input)
+				var name = $('#name').val()
+				var adresse = $('#adresse').val()
+				var old = $('#old').val()
+				var url1= "{{path('app_traiter')}}"
+				var url2= "{{path('app_ajax')}}"
 				$.ajax({
-					url: "{{path('app_traiter')}}",
+					url: url1,
 					method: "POST",
-					data: { input: input },
+					data: { nom:name,contact:adresse,age:old },
 					success: function (data) {
-						// 	$("#dataresult").html(data),
-						// 	$("#dataresult").css("display", "block")
 						console.log(data);
-						$('#input').val("")
+						$('#quickForm')[0].reset()
+						$('.table').load(location.href+' .table')
+						//$('#message').html(data)
+						swal('',data.message)
 					},
-					// error: function (XMLHttpRequest, textStatus, errorThrown) {
-					// 	alert(textStatus)
-					// }
+					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						console.log(textStatus)
+					}
 
 				})
 
@@ -60,8 +64,15 @@
 				success: function (data) {
 					//swal('',data.nom)
 					//$("#dataresult").css("display", "block")
-					console.log(data);
-					//$("#dataresult2").html(data)
+					//console.log(data);
+					$.each(data.client,function (key,item) {
+						$('tbody').append('<tr>\
+							<td>'+item.id+'</td>\
+							<td>'+item.nom+'</td>\
+							<td>'+item.contact+'</td>\
+							</tr>\
+						')
+					})
 
 				},
 				error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -71,7 +82,7 @@
 			})
 			//setTimeout(data, 1000)
 		}
-		data()
+		
 	</script>
 	{% endblock %}
 </body>
