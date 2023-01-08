@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajax
+{% endblock %}
+{% block body %}
+	<h1 class="container">Gestion des comptes bancaires Sous symfony et Ajax v1.0</h1>
+	<div class="row container">
+		<div class="col-md-12">
+			<div class="btn-group" style="display: inline-block;">
+				<button type="button" class="btn btn-theme03">Options</button>
+				<button type="button" class="btn btn-theme03 dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+				<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+				<li><a href="#" data-toggle="modal" data-target="#myModal">Ajouter un Client</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#myModal2">Ajouter un Compte</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#myModal3">Déposer de l'argent</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#myModal3">Retirer de l'argent</a></li>
+				<li class="divider"></li>
+				<li><a href="#">Separated link</a></li>
+				</ul>
+			</div>
+			<div>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<td>#</td>
+							<td>Nom</td>
+							<td>Contact</td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for client in clients %}
+							<tr>
+								<td>{{client.id}}</td>
+								<td>{{client.nom}}</td>
+								<td>{{client.contact}}</td>
+							</tr>
+						
+						{% else %}
+							<tr>
+								<td colspan="3" class="text-center">{{'Tableau vide ...'}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>	
+		</div>
+		{# end col #}
+			
+	</div>
+	{# end row #}
+	{% include "layouts/forms.html.twig" %}
+	<br>
+
+{% endblock %}

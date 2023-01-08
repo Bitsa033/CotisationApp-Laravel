@@ -20,21 +20,21 @@ class AjaxEtSymfonyController extends AbstractController
     public function index(ClientRepository $clientRepository): Response
     {
     
-        return $this->render('ajax_et_symfony/index.html.twig', [
-            'controller_name' => 'AjaxEtSymfonyController',
+        return $this->render('clients/index.html.twig', [
             'clients'=>$clientRepository->findAll()
         ]);
     }
 
     /**
-     * @Route("traiter", name="app_traiter")
+     * @Route("ajouterClient", name="ajouterClient")
      */
-    public function traiter(Request $request)
+    public function ajouterClient(Request $request)
     {
-        if (!empty($request->request->get('nom')) && !empty($request->request->get('contact'))) {
+        if (!empty($request->request->get('nom')) && 
+            !empty($request->request->get('contact'))) {
             $nom=$request->request->get('nom');
             $contact=$request->request->get('contact');
-            //$age=$request->get('age');
+            
             $client=new Client();
             $client->setNom($nom);
             $client->setContact($contact);
@@ -51,18 +51,19 @@ class AjaxEtSymfonyController extends AbstractController
         }
         else {
             return $this->json([
-                'message'=>'Votre formulaire ne doit pas est vide',
+                'message'=>'Votre formulaire ne doit pas etre vide... Remplissez-le',
                 'icon'=>'alert-error'
             ]);
         }
     }
     /**
-     * @Route("afficher", name="app_afficher")
+     * @Route("delete", name="deleteClient")
      */
-    public function afficher(ClientRepository $clientRepository)
+    public function delete()
     {
-        return $this->json([
-            "client"=>$clientRepository->findAll()
-        ]);
+        $c=$this->getDoctrine()->getConnection();
+        $r=$c->exec('delete from client');
+        return new Response('Données supprimés avec succès !');
+
     }
 }
