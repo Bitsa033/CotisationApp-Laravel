@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajax
+{% endblock %}
+
+{% block body %}
+	<h1 class="container">Gestion des comptes bancaires Sous symfony et Ajax v1.0</h1>
+	<div class="row container">
+		<div class="col-md-12">
+			<div>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<td>#</td>
+							<td>Nom</td>
+							<td>Contact</td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for client in clients %}
+							<tr>
+								<td>{{client.id}}</td>
+								<td>{{client.nom}}</td>
+								<td>{{client.contact}}</td>
+							</tr>
+						
+						{% else %}
+							<tr>
+								<td colspan="3" class="text-center">{{'Tableau vide ...'}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>	
+		</div>
+		{# end col #}
+			
+	</div>
+	{% include "layouts/client/insert.html.twig" %}
+	<br>
+
+{% endblock %}

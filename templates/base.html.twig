@@ -13,85 +13,27 @@
 	<link href="img/favicon.png" rel="icon">
 	<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
 	<!-- Bootstrap core CSS -->
-	<link href="bootstrap.min.css" rel="stylesheet">
-	<link href="dist/sweetalert.css" rel="stylesheet">
+	<link href="dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="dist/css/sweetalert.css" rel="stylesheet">
 	<!--external css-->
-	<link href="lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
 	{#{{ encore_entry_link_tags('app') }}#}
 	{% endblock %}
 
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="#">Expand at lg</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
-  
-		<div class="collapse navbar-collapse" id="navbarsExample05">
-		  <ul class="navbar-nav mr-auto">
-			<li class="nav-item active">
-			  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link" href="#">Link</a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link disabled" href="#">Disabled</a>
-			</li>
-			<li class="nav-item dropdown">
-			  <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-			  <div class="dropdown-menu" aria-labelledby="dropdown05">
-				<a class="dropdown-item" href="#">Action</a>
-				<a class="dropdown-item" href="#">Another action</a>
-				<a class="dropdown-item" href="#">Something else here</a>
-			  </div>
-			</li>
-		  </ul>
-		  <form class="form-inline my-2 my-md-0">
-			<input class="form-control" type="text" placeholder="Search">
-		  </form>
-		</div>
-	  </nav>
+	{% include "layouts/admin/navigation.html.twig" %}
 	{% block body %}{% endblock %}
 	{% block javascripts %}
-	<script src="lib/jquery/jquery.min.js"></script>
-	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
-	<script src="dist/sweetalert.min.js"></script>
-	<script src="dist/popper.min.js"></script>
-	<script>window.jQuery || document.write('<script src="dist/jquery-slim.min.js"><\/script>')</script>
+	<script src="dist/js//jquery.min.js"></script>
+	<script src="dist/js//bootstrap.min.js"></script>
+	<script src="dist/js/sweetalert.min.js"></script>
+
 	{#{{ encore_entry_script_tags('app') }}#}
+	<script src="dist/js/Ajax.js"></script>
 	<script>
-		$(document).ready(function () {
-			$("#click").click(function (e) {
-				e.preventDefault()
-				var name = $('#name').val()
-				var adresse = $('#adresse').val()
-				var old = $('#old').val()
-				var url1= "{{path('ajouterClient')}}"
-				var url2= "{{path('app_ajax')}}"
-				$.ajax({
-					url: url1,
-					method: "POST",
-					data: { nom:name,contact:adresse,age:old },
-					success: function (data) {
-						console.log(data);
-						// $('#quickForm')[0].reset()
-						$('.table').load(location.href+' .table')
-						//$('#message').html(data)
-						swal('',data.message)
-					},
-					error: function (XMLHttpRequest, textStatus, errorThrown) {
-						console.log(textStatus)
-					}
-
-				})
-
-			})
-
-		})
-		
+		var url1= "{{path('ajouterClient')}}"
+		insert(url1)
 	</script>
 	{% endblock %}
 </body>
