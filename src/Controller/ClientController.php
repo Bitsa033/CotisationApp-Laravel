@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Controller;
-
-use App\Repository\ClientRepository;
 use App\Services\Clients;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClientController extends AbstractController
 {
     /**
-     * @Route("/", name="app_ajax")
+     * @Route("/", name="clients")
      */
     public function index(Clients $clients): Response
     {
@@ -23,21 +21,20 @@ class ClientController extends AbstractController
     }
 
     /**
-     * @Route("ajouterClient", name="ajouterClient")
+     * lien pour enregistrer un clien
+     * @Route("insertClient", name="insertClient")
      */
-    public function insert(Request $request,Clients $clients)
+    public function insertClient(Request $request,Clients $clients)
     {
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($nom) && !empty($contact)) {
            $create=$clients->create(compact("nom","contact"));
-           $clients->save($create);
             return $this->json([
                 'message'=>'Vos données ont été enregistrer avec success',
                 'icon'=>'success',
                 'debug'=>$clients
             ]);
-            
             
         }
         else {
@@ -48,13 +45,20 @@ class ClientController extends AbstractController
         }
 
     }
+
     /**
-     * @Route("delete", name="deleteClient")
+     * lien pour supprimer tous les clients
+     * @Route("deleteClient", name="deleteClient")
      */
-    public function delete(Clients $clients)
+    public function deleteClient(Clients $clients)
     {
         $clients->delete();
-        return new Response('Données supprimés avec succès !');
+        
+        return $this->json([
+            'message'=>'Ok, la base de donnée est vide !',
+            'icon'=>'success'
+        ]);
+
 
     }
 }

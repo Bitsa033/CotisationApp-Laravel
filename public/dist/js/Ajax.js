@@ -34,3 +34,29 @@ function insert(url1) {
     
     })
 }
+
+function remove(url1) {
+    $(document).ready(function () {
+        $("#remove").click(function (e) {
+            e.preventDefault()
+            
+            $.ajax({
+                url: url1,
+                method: "POST",
+                success: function (data) {
+                    console.log(data);
+                    // $('#quickForm')[0].reset()
+                    $('.table').load(location.href+' .table')
+                    alert(data.message)
+                    //swal("Good job!", data.message, data.icon)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                }
+    
+            })
+    
+        })
+    
+    })
+}
