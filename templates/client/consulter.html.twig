@@ -1,0 +1,35 @@
+<h1>Banque numérique Avec symfony et Ajax et la POO v1.0</h1>
+		<div class="row">
+			<div class="col-md-12">
+				<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="ti-plus"></i></button>
+				<table class="table table-bordered table-responsible">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nom</th>
+							<th>Contact</th>
+							<th>Consulter</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for client in clients %}
+							<tr>
+								<td>{{client.id}}</td>
+								<td>{{client.nom}}</td>
+								<td>{{client.contact}}</td>
+								<td>
+									<a onclick=t() href="{{path('consulterClient')}}" class="btn btn-primary">Consulter</a>
+								</td>
+							</tr>
+
+						{% else %}
+							<tr>
+								<td colspan="3" class="text-center">{{'Tableau vide ...'}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			{# end col #}
+		</div>
+		{# end row #}

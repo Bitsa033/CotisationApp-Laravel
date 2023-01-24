@@ -4,26 +4,38 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class="container">Gestion des comptes bancaires Sous symfony et Ajax v1.0</h1>
-	<div class="row container">
-		<div class="col-md-12">
-			<div>
+	<div class="container offset-1" id="wrapper">
+		<h1>Banque numérique Avec symfony et Ajax et la POO v1.0</h1>
+		<div class="row">
+			<div class="col-md-12">
+				
+    		<!-- Modal -->
+				<button class="btn btn-primary" data-toggle="modal" data-target="#client"><i class="ti-plus"></i></button>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<td>#</td>
-							<td>Nom</td>
-							<td>Contact</td>
+							<th>#</th>
+							<th>Nom</th>
+							<th>Contact</th>
+							<th>Compte</th>
 						</tr>
 					</thead>
+					
 					<tbody>
 						{% for client in clients %}
 							<tr>
 								<td>{{client.id}}</td>
 								<td>{{client.nom}}</td>
 								<td>{{client.contact}}</td>
+								<td>
+									<form action="" method="post">
+										<input type="hidden" value="{{client.id}}" name="idclient" class="idclient">
+										<button type="submit" class="btn_idclient" name="btn_idclient">Id</button>
+										<a href="" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-primary menu">Consulter</a>
+									</form>
+								</td>
 							</tr>
-						
+
 						{% else %}
 							<tr>
 								<td colspan="3" class="text-center">{{'Tableau vide ...'}}</td>
@@ -31,12 +43,12 @@
 						{% endfor %}
 					</tbody>
 				</table>
-			</div>	
+			</div>
+			{# end col #}
 		</div>
-		{# end col #}
-			
-	</div>
-	{% include "layouts/client/insert.html.twig" %}
-	<br>
+		{# end row #}
 
+	</div>
+	<br>
+	
 {% endblock %}

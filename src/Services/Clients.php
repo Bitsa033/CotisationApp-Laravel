@@ -82,8 +82,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         $this->db->flush();
       }
       //dd($allclient);
-      // $this->db->remove($client);
-      // $this->db->flush();
+    }
+
+    public function deleteOne($id)
+    {
+      $clientid=$this->clients->find($id);
+      $this->db->remove($clientid);
+      $this->db->flush();
     }
 
     
