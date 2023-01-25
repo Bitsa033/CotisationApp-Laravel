@@ -28,11 +28,10 @@
 								<td>{{client.nom}}</td>
 								<td>{{client.contact}}</td>
 								<td>
-									<form action="" method="post">
-										<input type="hidden" value="{{client.id}}" name="idclient" class="idclient">
-										<button type="submit" class="btn_idclient" name="btn_idclient">Id</button>
-										<a href="" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-primary menu">Consulter</a>
-									</form>
+									<a class="btn_idclient" href="{{path('consulterClient',{id:client.id})}}">show</a>
+									
+									<a href="" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-primary menu">Consulter</a>
+									
 								</td>
 							</tr>
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Repository\ClientRepository;
 use App\Services\Clients;
 use Doctrine\Persistence\ManagerRegistry;
@@ -55,13 +56,20 @@ class ClientController extends AbstractController
     }
     /**
      * lien pour consulter un seul client par son id
-     * @Route("consulterClient", name="consulterClient")
+     * @Route("consulterClient_{id}", name="consulterClient")
      */
-    function consulterClient(Clients $clients)
+    function consulterClient(ClientRepository $clientRepository,$id)
     {
-        return $this->render('client/consulter.html.twig',[
-            'clients'=>$clients->getAll()
+        
+        $client=$clientRepository->find($id);
+        $id2=$client->getId();
+        return $this->json([
+            'id'=>$id2,
+            'icon'=>'success'
         ]);
+        // return $this->render('client/consulter.html.twig',[
+        //     'client'=>$client
+        // ]);
     }
 
     /**

@@ -134,24 +134,22 @@ function client() {
     $(document).ready(function () {
         $(".btn_idclient").click(function (e) {
             e.preventDefault()
-            var id = $('.idclient').val()
-            alert(id)
-            //console.log(id);
-            // $.ajax({
-            //     url: url1,
-            //     method: "POST",
-            //     data:{id:id},
-            //     success: function (data) {
-            //         console.log(data);
-            //         // $('#quickForm')[0].reset()
-            //         alert(data.id)
-            //         //swal("Good job!", data.message, data.icon)
-            //     },
-            //     error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //         console.log(textStatus)
-            //     }
+            link=$(this).attr("href")
+            console.log(id);
+            $.ajax({
+                url: link,
+                method: "GET",
+                success: function (data) {
+                    console.log(data.id);
+                    // $('#quickForm')[0].reset()
+                    alert(data.id)
+                    //swal("Good job!", data.message, data.icon)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                }
     
-            // })
+            })
     
         })
     
