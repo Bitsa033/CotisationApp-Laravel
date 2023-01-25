@@ -10,14 +10,14 @@
 			<div class="col-md-12">
 				
     		<!-- Modal -->
-				<button class="btn btn-primary" data-toggle="modal" data-target="#client"><i class="ti-plus"></i></button>
+				<button class="btn btn-primary" data-toggle="modal" data-target="#client">Nouveau client <i class="ti-plus"></i></button>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th>#</th>
 							<th>Nom</th>
 							<th>Contact</th>
-							<th>Actions</th>
+							<th>Options</th>
 						</tr>
 					</thead>
 					
@@ -28,7 +28,10 @@
 								<td>{{client.nom}}</td>
 								<td>{{client.contact}}</td>
 								<td>
+									{# <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button> #}
+									<a class=" btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
 									<a class="btn_idclient btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
+									<a class=" btn btn-danger" href="{{path('consulterClient',{id:client.id})}}"></i> Supprimer</a>
 								</td>
 							</tr>
 
