@@ -34,13 +34,13 @@ function insert(url1) {
     })
 }
 
-function update(url1) {
+function update(url1,url2) {
     $(document).ready(function () {
         $("#update").click(function (e) {
             e.preventDefault()
-            var id = $('#id').val()
-            var name = $('#name').val()
-            var adresse = $('#adresse').val()
+            var id = $('#idc').val()
+            var name = $('#nom').val()
+            var adresse = $('#contact').val()
             
             $.ajax({
                 url: url1,
@@ -49,14 +49,15 @@ function update(url1) {
                 success: function (data) {
                     //console.log(data);
                     // $('#quickForm')[0].reset()
-                    $('.table').load(location.href+' .table')
-                    $('#message').html(data.message)
+                    $('.message').html(data.message)
+                    $('.table').load(location.href+' .table-bordered')
+                    location.href=url2
                     if (data.icon=="success") {
-                        $('#message').css("color","green")
+                        $('.message').css("color","green")
                     }
                     if (data.icon=="error"){
 
-                        $('#message').css("color","red")
+                        $('.message').css("color","red")
                     }
                     //swal("Good job!", data.message, data.icon)
                 },
@@ -140,9 +141,12 @@ function client() {
                 url: link,
                 method: "GET",
                 success: function (data) {
-                    console.log(data.id);
-                    // $('#quickForm')[0].reset()
-                    alert(data.id)
+                    //console.log(data.id);
+                    $('#exampleModalLong').modal()
+                    $('.modal-title').html('Mise à jour du client n°'+data.id)
+                    $('#idc').val(data.id)
+                    $('#nom').val(data.nom)
+                    $('#contact').val(data.contact)
                     //swal("Good job!", data.message, data.icon)
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

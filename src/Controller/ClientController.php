@@ -63,8 +63,12 @@ class ClientController extends AbstractController
         
         $client=$clientRepository->find($id);
         $id2=$client->getId();
+        $nom=$client->getNom();
+        $contact=$client->getContact();
         return $this->json([
             'id'=>$id2,
+            'nom'=>$nom,
+            'contact'=>$contact,
             'icon'=>'success'
         ]);
         // return $this->render('client/consulter.html.twig',[

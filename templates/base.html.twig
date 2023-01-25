@@ -41,7 +41,7 @@
 		var deleteOneClient= "{{path('deleteOneClient')}}"
 		var getIdClient= "{{path('clients')}}"
 		insert(insertClient)
-		update(updateClient)
+		update(updateClient,getIdClient)
 		remove(deleteClient)
 		removeOne(deleteOneClient)
 		client()

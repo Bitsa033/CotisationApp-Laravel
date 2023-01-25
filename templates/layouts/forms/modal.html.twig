@@ -37,7 +37,6 @@
               <div class="modal-footer">
                 <button type="reset" class="btn btn-info">Annuler</button>
                 <button type="submit" class="btn btn-primary" id="insert">Enregistrer</button>
-                <button type="submit" class="btn btn-warning" id="update">Modiier</button>
                 <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button>
                 <button type="button" class="btn btn-info" data-dismiss="modal">Femer</button>
                 </form>
@@ -85,7 +84,7 @@
                 <div class="modal-footer">
                   <button type="reset" class="btn btn-info">Annuler</button>
                   <button type="submit" class="btn btn-primary" id="insert">Enregistrer</button>
-                  <button type="submit" class="btn btn-warning" id="update">Modiier</button>
+                  <button type="submit" class="btn btn-warning" id="updatec">Modiier</button>
                   <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button>
                   <button type="button" class="btn btn-info" data-dismiss="modal">Femer</button>
                   </form>
@@ -101,27 +100,35 @@
       <div class="modal-dialog">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title">Modal title</h5>
+                  <h5 class="modal-title">Mise à jour</h5>
                   <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                   </button>
               </div>
               <div class="modal-body">
-                  <table class="table table-bordered">
-                      <tr>
-                        <thead>
-                          <th>Solde</th>
-                        </thead>
-                      </tr>
-                      <tr>
-                        <tbody>
-                          <td>O FCFA</td>
-                        </tbody>
-                      </tr>
-                  </table>
+                <form autocomplete="off" id="quickForm">
+                    <div class="form-group">
+                        <label for="idc">Client n°:</label>
+                      <input type="text" name="idc" class="form-control" id="idc">
+                      <div class="validate"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nom">Nom:</label>
+                      <input type="text" name="nom" class="form-control" id="nom">
+                      <div class="validate"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                       <label for="contact">Contact:</label>
+                      <input type="text" name="contact" class="form-control" id="contact">
+                      <div class="validate"></div>
+                    </div>
+                    <div class="message"></div>
+                {# </form> #}
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-primary" id="update">Enregistrer les modifications</button>
+              </form>
               </div>
           </div>
       </div>

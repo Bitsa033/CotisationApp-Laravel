@@ -17,7 +17,7 @@
 							<th>#</th>
 							<th>Nom</th>
 							<th>Contact</th>
-							<th>Compte</th>
+							<th>Actions</th>
 						</tr>
 					</thead>
 					
@@ -28,10 +28,7 @@
 								<td>{{client.nom}}</td>
 								<td>{{client.contact}}</td>
 								<td>
-									<a class="btn_idclient" href="{{path('consulterClient',{id:client.id})}}">show</a>
-									
-									<a href="" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-primary menu">Consulter</a>
-									
+									<a class="btn_idclient btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
 								</td>
 							</tr>
 
