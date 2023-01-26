@@ -44,11 +44,10 @@
 		var insertClient= "{{path('insertClient')}}"
 		var updateClient= "{{path('updateClient')}}"
 		var deleteClient= "{{path('deleteClient')}}"
-		var deleteOneClient= "{{path('deleteOneClient')}}"
 		var index= "{{path('clients')}}"
 		insert(insertClient,index)
 		update(updateClient,index)
-		remove(deleteClient,deleteOneClient)
+		remove(deleteClient,index)
 		showClient()
 	</script>
 	{% block javascripts %}

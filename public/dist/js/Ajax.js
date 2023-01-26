@@ -95,25 +95,19 @@ function remove(url1,url2) {
     
         })
 
-        $("#removeOne").click(function (e) {
+        $(".removeOne").click(function (e) {
             e.preventDefault()
-            var id = $('#id').val()
+            link=$(this).attr("href")
             $.ajax({
-                url: url2,
-                method: "POST",
-                data:{id:id},
+                url: link,
+                method: "GET",
                 success: function (data) {
                     //console.log(data);
                     // $('#quickForm')[0].reset()
                     $('.table').load(location.href+' .table-bordered')
-                    $('#message').html(data.message)
-                    if (data.icon=="success") {
-                        $('#message').css("color","green")
-                    }
-                    if (data.icon=="error"){
-
-                        $('#message').css("color","red")
-                    }
+                    alert(data.message)
+                    location.href=url2
+                    
                     //swal("Good job!", data.message, data.icon)
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -176,6 +170,7 @@ function showClient() {
             })
     
         })
+
     
     })
 }

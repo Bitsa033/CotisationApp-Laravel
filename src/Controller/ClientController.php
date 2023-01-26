@@ -131,11 +131,10 @@ class ClientController extends AbstractController
 
     /**
      * lien pour supprimer un seul client
-     * @Route("deleteOneClient", name="deleteOneClient")
+     * @Route("deleteOneClient_{id}", name="deleteOneClient")
      */
-    public function deleteOneClient(Request $request,Clients $clients)
+    public function deleteOneClient(Clients $clients,$id)
     {
-        $id=$request->request->get('id');
         if (!empty($id)) {
             $clients->deleteOne($id);
             

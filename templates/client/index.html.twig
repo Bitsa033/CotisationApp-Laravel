@@ -35,7 +35,7 @@
 									{# <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button> #}
 									<a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
 									<a class="btn_update_client btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
-									<a class="btn_remove_client btn btn-danger" href="{{path('consulterClient',{id:client.id})}}"></i> Supprimer</a>
+									<a class="removeOne btn btn-danger" href="{{path('deleteOneClient',{id:client.id})}}"></i> Supprimer</a>
 								</td>
 							</tr>
 
