@@ -5,7 +5,11 @@
 
 {% block body %}
 	<div class="container offset-1" id="wrapper">
-		<h1>Banque numérique Avec symfony et Ajax et la POO v1.0</h1>
+		<h1>
+			<p style="color:aqua; display:inline-block ">Compte Bancaire Avec </p>
+			<p style="display:inline-block; color:blueviolet; ">symfony</p> 
+			<p style="display:inline-block; color:chartreuse; ">et</p> 
+			<p style="display:inline-block ; color:cornflowerblue">Ajax</p></h1>
 		<div class="row">
 			<div class="col-md-12">
 				
@@ -17,7 +21,7 @@
 							<th>#</th>
 							<th>Nom</th>
 							<th>Contact</th>
-							<th>Options</th>
+							<th style="width: 30%;">Options</th>
 						</tr>
 					</thead>
 					
@@ -29,9 +33,9 @@
 								<td>{{client.contact}}</td>
 								<td>
 									{# <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button> #}
-									<a class=" btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
-									<a class="btn_idclient btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
-									<a class=" btn btn-danger" href="{{path('consulterClient',{id:client.id})}}"></i> Supprimer</a>
+									<a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
+									<a class="btn_update_client btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
+									<a class="btn_remove_client btn btn-danger" href="{{path('consulterClient',{id:client.id})}}"></i> Supprimer</a>
 								</td>
 							</tr>
 

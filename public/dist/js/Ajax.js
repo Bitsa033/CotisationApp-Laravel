@@ -1,4 +1,4 @@
-function insert(url1) {
+function insert(url1,url2) {
     $(document).ready(function () {
         $("#insert").click(function (e) {
             e.preventDefault()
@@ -12,8 +12,9 @@ function insert(url1) {
                 success: function (data) {
                     //console.log(data);
                     // $('#quickForm')[0].reset()
-                    $('.table').load(location.href+' .table')
+                    $('.table').load(location.href+' .table-bordered')
                     $('#message').html(data.message)
+                    location.href=url2
                     if (data.icon=="success") {
                         $('#message').css("color","green")
                     }
@@ -72,7 +73,7 @@ function update(url1,url2) {
     })
 }
 
-function remove(url1) {
+function remove(url1,url2) {
     $(document).ready(function () {
         $("#remove").click(function (e) {
             e.preventDefault()
@@ -82,7 +83,7 @@ function remove(url1) {
                 success: function (data) {
                     //console.log(data);
                     // $('#quickForm')[0].reset()
-                    $('.table').load(location.href+' .table')
+                    $('.table').load(location.href+' .table-bordered')
                     alert(data.message)
                     //swal("Good job!", data.message, data.icon)
                 },
@@ -93,23 +94,18 @@ function remove(url1) {
             })
     
         })
-    
-    })
-}
 
-function removeOne(url1) {
-    $(document).ready(function () {
         $("#removeOne").click(function (e) {
             e.preventDefault()
             var id = $('#id').val()
             $.ajax({
-                url: url1,
+                url: url2,
                 method: "POST",
                 data:{id:id},
                 success: function (data) {
                     //console.log(data);
                     // $('#quickForm')[0].reset()
-                    $('.table').load(location.href+' .table')
+                    $('.table').load(location.href+' .table-bordered')
                     $('#message').html(data.message)
                     if (data.icon=="success") {
                         $('#message').css("color","green")
@@ -131,9 +127,9 @@ function removeOne(url1) {
     })
 }
 
-function client() {
+function showClient() {
     $(document).ready(function () {
-        $(".btn_idclient").click(function (e) {
+        $(".btn_update_client").click(function (e) {
             e.preventDefault()
             link=$(this).attr("href")
             console.log(id);
@@ -147,6 +143,30 @@ function client() {
                     $('#idc').val(data.id)
                     $('#nom').val(data.nom)
                     $('#contact').val(data.contact)
+                    //swal("Good job!", data.message, data.icon)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                }
+    
+            })
+    
+        })
+
+        $(".btn_show_client").click(function (e) {
+            e.preventDefault()
+            link=$(this).attr("href")
+            console.log(id);
+            $.ajax({
+                url: link,
+                method: "GET",
+                success: function (data) {
+                    //console.log(data.id);
+                    $('#exampleModalCenter').modal()
+                    $('.modal-title').html('Client n°'+data.id)
+                    // $('.idc').html(data.id)
+                    // $('.nom').html(data.nom)
+                    // $('.contact').html(data.contact)
                     //swal("Good job!", data.message, data.icon)
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

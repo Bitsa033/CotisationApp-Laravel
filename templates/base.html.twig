@@ -16,6 +16,12 @@
 	{# <link href="font/fontawesome/css/all.min.css" rel="stylesheet"> #}
 	<link href="font/themify-icons/css/themify-icons.css" rel="stylesheet">
 	<link href="dist/css/sweetalert.css" rel="stylesheet">
+	<style>
+		#table th,td{
+			border: 2px gainsboro solid;
+		}
+		#table{border-collapse: collapse;}
+	</style>
 	{% block stylesheets %}
 	<!--external css-->
 	{#{{ encore_entry_link_tags('app') }}#}
@@ -39,12 +45,11 @@
 		var updateClient= "{{path('updateClient')}}"
 		var deleteClient= "{{path('deleteClient')}}"
 		var deleteOneClient= "{{path('deleteOneClient')}}"
-		var getIdClient= "{{path('clients')}}"
-		insert(insertClient)
-		update(updateClient,getIdClient)
-		remove(deleteClient)
-		removeOne(deleteOneClient)
-		client()
+		var index= "{{path('clients')}}"
+		insert(insertClient,index)
+		update(updateClient,index)
+		remove(deleteClient,deleteOneClient)
+		showClient()
 	</script>
 	{% block javascripts %}
 	{% endblock %}

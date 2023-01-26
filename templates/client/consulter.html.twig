@@ -5,7 +5,7 @@
 	<div class="row container">
 		<div class="col-md-12">
 			<button class="btn btn-primary" data-toggle="modal" data-target="#client"><i class="ti-plus"></i></button>
-			<table class="table table-bordered table-responsible">
+			<table class="table table-bordered">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -14,19 +14,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% if client %}
+
 					<tr>
 						<td>{{client.id}}</td>
 						<td>{{client.nom}}</td>
 						<td>{{client.contact}}</td>
 					</tr>
-					{% else %}
-						<tr>
-							<td colspan="3">Aucun ...</td>
-						</tr>
-					{% endif %}
-					
-	
+
+					<tr>
+						<td colspan="3">Aucun ...</td>
+					</tr>
+
 				</tbody>
 			</table>
 		</div>
