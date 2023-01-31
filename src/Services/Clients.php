@@ -5,15 +5,88 @@ use App\Repository\ClientRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-  class Clients extends AbstractController
-{
+class Toto extends AbstractController{
+
+  protected $table;
+  protected $repo;
+  protected $db;
+
   /**
-   * Je créé les variables protégés: $db et $clients
-   * $db:pour la base de données
-   * $clients:pour le repository des clients
+   * Ce constructeur me donne automatiquement:
+   * La connexion à la base de données
+   * @param ManagerRegistry $manager
    */
-  protected $db=null;
-  protected $clients=null;
+  function __construct(ManagerRegistry $manager)
+  {
+    $this->db=$manager->getManager();
+  }
+
+  /**
+   * Cette méthode affiche toutes les données d'une table
+   * @return array
+   */
+  public function getAll():array
+  {
+    $fetchAll=$this->repo->findAll();
+
+    return $fetchAll;
+
+  }
+  
+  /**
+   * Cette méthode affiche une donnée d'une table
+   * par son id
+   * @param integer $id
+   * @return void
+   */
+  public function getOne(int $id)
+  {
+    $fetchOne =$this->repo->find($id);
+    return $fetchOne;
+  }
+
+  /**
+     * Cette méthode enregistre les données d'une table
+     * @param $object
+     * @return void
+     */
+    public function save($object)
+    {
+        $this->db->persist($object);
+        $this->db->flush();
+    }
+
+    /**
+     * Cette méthode supprime toutes les données d'une table
+     * @return void
+     */
+    public function delete()
+    {
+      $alldata=$this->repo->findAll();
+      foreach ($alldata as $key => $value) {
+        $this->db->remove($value);
+        $this->db->flush();
+      }
+    }
+
+    /**
+     * Cette méthode supprime une seule donnée d'une table 
+     * par son id
+     * @param int $id
+     * @return void
+     */
+    public function deleteOne(int $id):void
+    {
+      $fid=$this->getOne($id);
+      $this->db->remove($fid);
+      $this->db->flush();
+    }
+
+
+}
+
+  class Clients extends Toto
+{
 
   /**
    * Je créé un constructeur qui me donne automatiquement:
@@ -23,74 +96,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
    */
   function __construct(ManagerRegistry $manager,ClientRepository $clientRepository)
   {
-    $this->db=$manager->getManager();
-    $this->clients=$clientRepository;
+    $this->table= new Client();
+    $this->repo=$clientRepository;
+    parent::__construct($manager);
   }
 
   /**
-     * Cette fonction enregistre un objet de type client en
-     * base de données
-     * @param Client $object
-     * @return void
-     */
-    public function save(Client $object)
-    {
-        $this->db->persist($object);
-        $this->db->flush();
-    }
-
-  /**
-   * Cette fonction crée un nouveau client et
-   * l'enregistre en base de données
+   * Cette méthode construit les données d'une table et les 
+   * l'enregistre
    * @param array $data
    * @return void
    */
     public function create(array $data)
     {
-       $client=new Client();
-       $client->setNom($data["nom"]);
-       $client->setContact($data["contact"]);
+      $table=$this->table;
+      $table->setNom($data["nom"]);
+      $table->setContact($data["contact"]);
        
-        $this->save($client);
-        return $client;
+        $this->save($table);
+        return $table;
     }
-    
-    /**
-     * Cette fonction affiche tous les clients qui
-     * sont en base de données
-     * @return void
-     */
-    public function getAll()
-    {
-      $clients=$this->clients->findAll();
-
-      return $clients;
-
-    }
-
-    /**
-     * Cette fonction supprime tous les
-     * clients qui se trouvent en base de
-     * données
-     * @return void
-     */
-    public function delete()
-    {
-      $allclient=$this->clients->findAll();
-      foreach ($allclient as $key => $value) {
-        $this->db->remove($value);
-        $this->db->flush();
-      }
-      //dd($allclient);
-    }
-
-    public function deleteOne($id)
-    {
-      $clientid=$this->clients->find($id);
-      $this->db->remove($clientid);
-      $this->db->flush();
-    }
-
+        
     
 }
 

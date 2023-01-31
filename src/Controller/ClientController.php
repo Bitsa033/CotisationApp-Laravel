@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Controller;
-
-use App\Entity\Client;
 use App\Repository\ClientRepository;
 use App\Services\Clients;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,13 +15,9 @@ class ClientController extends AbstractController
      * lien qui affiche la liste des clients
      * @Route("/", name="clients")
      */
-    public function index(Clients $clients, Request $request): Response
+    public function index(Clients $clients): Response
     {
-        if (!empty($request->request->get('idclient'))) {
-            # code...
-            dd($request->request->get('idclient'));
-        }
-        
+        //dd($clients->n);
         return $this->render('client/index.html.twig', [
             'clients'=>$clients->getAll()
         ]);
@@ -42,7 +36,6 @@ class ClientController extends AbstractController
             return $this->json([
                 'message'=>'Ok, Données enrgistrées avec success',
                 'icon'=>'success',
-                'debug'=>$clients
             ]);
             
         }
@@ -60,7 +53,6 @@ class ClientController extends AbstractController
      */
     function consulterClient(ClientRepository $clientRepository,$id)
     {
-        
         $client=$clientRepository->find($id);
         $id2=$client->getId();
         $nom=$client->getNom();
