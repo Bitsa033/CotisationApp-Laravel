@@ -1,14 +1,14 @@
 <?php
 namespace App\Services;
-use App\Entity\Client;
-use App\Repository\ClientRepository;
+use App\Entity\Compte;
+use App\Repository\CompteRepository;
 
-  class Clients extends Toto
+class C2 extends Toto
 {
 
-  public function __construct(ClientRepository $repo)
+  public function __construct(CompteRepository $repo)
   {
-    $this->table= Client::class;
+    $this->table= Compte::class;
     $this->repo=$repo;
   }
 
@@ -37,3 +37,4 @@ use App\Repository\ClientRepository;
         
     
 }
+

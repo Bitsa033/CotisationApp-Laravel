@@ -11,10 +11,13 @@
         </thead>
     
         <tbody>
-            <td>1</td>
-            <td>654-543-123</td>
-            <td>0 FCFA</td>
-            <td>Akono Bertrant</td>
+            {% for item in comptes %}
+            <td>{{item.id}}</td>
+            <td>{{item.numero}}</td>
+            <td>{{item.solde}}</td>
+            <td>{{item.client.nom}}</td>
+                
+            {% endfor %}
         </tbody>
     </table>
 </div>
