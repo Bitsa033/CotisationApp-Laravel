@@ -27,6 +27,11 @@ class Client
      */
     private $contact;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Compte::class, mappedBy="client", cascade={"persist", "remove"})
+     */
+    private $compte;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,23 @@ class Client
     public function setContact(string $contact): self
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function getCompte(): ?Compte
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(Compte $compte): self
+    {
+        // set the owning side of the relation if necessary
+        if ($compte->getClient() !== $this) {
+            $compte->setClient($this);
+        }
+
+        $this->compte = $compte;
 
         return $this;
     }

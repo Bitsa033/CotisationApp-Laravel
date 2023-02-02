@@ -133,22 +133,6 @@ class Toto extends AbstractController{
        
       $this->update();
     }
-
-    // public function readOneData($id):array
-    // {
-    //   $client=$this->getRepo()->find(31);
-
-    //     $id2=$client->getId();
-    //     $nom=$client->getNom();
-    //     $contact=$client->getContact();
-    //     return $data=array([
-    //         'id'=>$id2,
-    //         'nom'=>$nom,
-    //         'contact'=>$contact,
-    //         'icon'=>'success'
-    //     ]);
-
-    // }
         
     
 }
