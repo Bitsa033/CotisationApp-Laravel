@@ -14,7 +14,7 @@ function insert(url1,url2) {
                     // $('#quickForm')[0].reset()
                     $('.table').load(location.href+' .table-bordered')
                     $('#message').html(data.message)
-                    location.href=url2
+                    // location.href=url2
                     if (data.icon=="success") {
                         $('#message').css("color","green")
                     }
@@ -52,7 +52,7 @@ function update(url1,url2) {
                     // $('#quickForm')[0].reset()
                     $('.message').html(data.message)
                     $('.table').load(location.href+' .table-bordered')
-                    location.href=url2
+                    // location.href=url2
                     if (data.icon=="success") {
                         $('.message').css("color","green")
                     }
@@ -131,7 +131,6 @@ function showClient() {
                 url: link,
                 method: "GET",
                 success: function (data) {
-                    //console.log(data.id);
                     $('#exampleModalLong').modal()
                     $('.modal-title').html('Mise à jour du client n°'+data.id)
                     $('#idc').val(data.id)

@@ -3,7 +3,6 @@
 namespace App\Controller;
 use App\Repository\ClientRepository;
 use App\Services\Clients;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +16,7 @@ class ClientController extends AbstractController
      */
     public function index(Clients $clients): Response
     {
-        //dd($clients->n);
+        // dd($d=$clients->readOneData(8));
         return $this->render('client/index.html.twig', [
             'clients'=>$clients->getAll()
         ]);
@@ -47,49 +46,47 @@ class ClientController extends AbstractController
         }
 
     }
+
     /**
      * lien pour consulter un seul client par son id
      * @Route("consulterClient_{id}", name="consulterClient")
      */
-    function consulterClient(ClientRepository $clientRepository,$id)
+    function consulterClient(ClientRepository $client,$id)
     {
-        $client=$clientRepository->find($id);
-        $id2=$client->getId();
-        $nom=$client->getNom();
-        $contact=$client->getContact();
+        $r=$client->find($id);
+        $id2=$r->getId();
+        $nom=$r->getNom();
+        $contact=$r->getContact();
         return $this->json([
             'id'=>$id2,
             'nom'=>$nom,
             'contact'=>$contact,
             'icon'=>'success'
         ]);
-        // return $this->render('client/consulter.html.twig',[
-        //     'client'=>$client
-        // ]);
+        
+        
     }
 
     /**
      * lien pour modifier un client qu'on a déja enregistré
      * @Route("updateClient", name="updateClient")
      */
-    function updateClient(Request $request,ClientRepository $repo,ManagerRegistry $managerRegistry)
+    function updateClient(Request $request,Clients $repo)
     {
         $id=$request->request->get('id');
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($id) && !empty($nom) && !empty($contact)) { 
-            $product=$repo->find($id);
-            if (!$product) {
+            $client=$repo->getOne($id);
+            if (!$client) {
                 return $this->json([
                     'message'=>'Erreur, Ce client n\'existe pas dans notre base de données ! ',
                     'icon'=>'error',
                 ]);
             }
             else {
-                $product->setNom($nom);
-                $product->setContact($contact);
-                $manager=$managerRegistry->getManager();
-                $manager->flush();
+                $create=$repo->updateClient(compact("client","nom","contact"));
+                
                 return $this->json([
                     'message'=>'Ok, Données modifiées avec success',
                     'icon'=>'success',

@@ -11,74 +11,91 @@ class Toto extends AbstractController{
   protected $repo;
   protected $db;
 
-  /**
-   * Ce constructeur me donne automatiquement:
-   * La connexion à la base de données
-   * @param ManagerRegistry $manager
-   */
-  function __construct(ManagerRegistry $manager)
+  public function getConnect()
   {
-    $this->db=$manager->getManager();
+    return $this->db= $this->getDoctrine()->getManager();
+  }
+
+  public function getRepo()
+  {
+    return $this->db= $this->getDoctrine()->getRepository($this->table);
   }
 
   /**
-   * Cette méthode affiche toutes les données d'une table
+   * Cette méthode affiche tous les enregistrements d'une table
    * @return array
    */
   public function getAll():array
   {
-    $fetchAll=$this->repo->findAll();
+    $repo=$this->repo=$this->getRepo();
+    $fetchAll=$repo->findAll();
 
     return $fetchAll;
 
   }
   
   /**
-   * Cette méthode affiche une donnée d'une table
+   * Cette méthode affiche un enregistrement d'une table
    * par son id
    * @param integer $id
    * @return void
    */
   public function getOne(int $id)
   {
-    $fetchOne =$this->repo->find($id);
+    $repo=$this->repo=$this->getRepo();
+    $fetchOne =$repo->find($id);
     return $fetchOne;
   }
 
-  /**
-     * Cette méthode enregistre les données d'une table
-     * @param $object
-     * @return void
-     */
-    public function save($object)
-    {
-        $this->db->persist($object);
-        $this->db->flush();
-    }
-
     /**
-     * Cette méthode supprime toutes les données d'une table
+     * Cette méthode supprime tous les enregistrements d'une table
      * @return void
      */
     public function delete()
     {
+      $this->db=$this->getConnect();
+      $this->repo=$this->getRepo();
       $alldata=$this->repo->findAll();
       foreach ($alldata as $key => $value) {
         $this->db->remove($value);
-        $this->db->flush();
+        //$this->db->flush();
       }
     }
 
     /**
-     * Cette méthode supprime une seule donnée d'une table 
+     * Cette méthode supprime un seul enregistrement d'une table 
      * par son id
      * @param int $id
      * @return void
      */
     public function deleteOne(int $id):void
     {
+      $this->db=$this->getConnect();
       $fid=$this->getOne($id);
       $this->db->remove($fid);
+      //$this->db->flush();
+    }
+
+    /**
+     * Cette méthode enregistre les données d'une table
+     * @param $object
+     * @return void
+     */
+    public function save($object)
+    {
+      $this->db=$this->getConnect();
+      $this->db->persist($object);
+      $this->db->flush();
+    }
+
+    /**
+     * Cette méthode modifie les données d'une table par son id
+     * @param $object
+     * @return void
+     */
+    public function update()
+    {
+      $this->db=$this->getConnect();
       $this->db->flush();
     }
 
@@ -88,17 +105,10 @@ class Toto extends AbstractController{
   class Clients extends Toto
 {
 
-  /**
-   * Je créé un constructeur qui me donne automatiquement:
-   * la connexion à la base de données, le repository des clients
-   * @param ManagerRegistry $manager
-   * @param ClientRepository $clientRepository
-   */
-  function __construct(ManagerRegistry $manager,ClientRepository $clientRepository)
+  public function __construct(ClientRepository $repo)
   {
-    $this->table= new Client();
-    $this->repo=$clientRepository;
-    parent::__construct($manager);
+    $this->table= Client::class;
+    $this->repo=$repo;
   }
 
   /**
@@ -109,13 +119,36 @@ class Toto extends AbstractController{
    */
     public function create(array $data)
     {
-      $table=$this->table;
+      $table= new $this->table;
       $table->setNom($data["nom"]);
       $table->setContact($data["contact"]);
        
-        $this->save($table);
-        return $table;
+      $this->save($table);
     }
+
+    public function updateClient(array $data)
+    {
+      $data['client']->setNom($data["nom"]);
+      $data['client']->setContact($data["contact"]);
+       
+      $this->update();
+    }
+
+    // public function readOneData($id):array
+    // {
+    //   $client=$this->getRepo()->find(31);
+
+    //     $id2=$client->getId();
+    //     $nom=$client->getNom();
+    //     $contact=$client->getContact();
+    //     return $data=array([
+    //         'id'=>$id2,
+    //         'nom'=>$nom,
+    //         'contact'=>$contact,
+    //         'icon'=>'success'
+    //     ]);
+
+    // }
         
     
 }
