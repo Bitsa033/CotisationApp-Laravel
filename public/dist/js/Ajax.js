@@ -1,4 +1,4 @@
-function insert(url1,url2) {
+function insert(url1) {
     $(document).ready(function () {
         $("#insert").click(function (e) {
             e.preventDefault()
@@ -14,7 +14,9 @@ function insert(url1,url2) {
                     // $('#quickForm')[0].reset()
                     $('.table').load(location.href+' .table-bordered')
                     $('#message').html(data.message)
-                    // location.href=url2
+                    setInterval(() => {
+                        location.href="/"
+                    }, 3000);
                     if (data.icon=="success") {
                         $('#message').css("color","green")
                     }
@@ -126,11 +128,11 @@ function showClient() {
         $(".btn_update_client").click(function (e) {
             e.preventDefault()
             link=$(this).attr("href")
-            console.log(id);
             $.ajax({
                 url: link,
                 method: "GET",
                 success: function (data) {
+                    console.log(data.id);
                     $('#exampleModalLong').modal()
                     $('.modal-title').html('Mise à jour du client n°'+data.id)
                     $('#idc').val(data.id)
@@ -149,12 +151,11 @@ function showClient() {
         $(".btn_show_client").click(function (e) {
             e.preventDefault()
             link=$(this).attr("href")
-            console.log(id);
             $.ajax({
                 url: link,
                 method: "GET",
                 success: function (data) {
-                    //console.log(data.id);
+                    console.log(data.id);
                     $('#exampleModalCenter').modal()
                     $('.modal-title').html('Client n°'+data.id)
                     // $('.idc').html(data.id)

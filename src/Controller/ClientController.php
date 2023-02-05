@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Repository\ClientRepository;
+use App\Services\C2;
 use App\Services\Clients;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,7 @@ class ClientController extends AbstractController
 {
     /**
      * lien qui affiche la liste des clients
-     * @Route("/", name="clients")
+     * @Route("clients", name="clients")
      */
     public function index(Clients $clients): Response
     {
@@ -26,16 +27,17 @@ class ClientController extends AbstractController
      * lien pour enregistrer un client
      * @Route("insertClient", name="insertClient")
      */
-    public function insertClient(Request $request,Clients $clients)
+    public function insertClient(Request $request,Clients $client)
     {
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($nom) && !empty($contact)) {
-           $create=$clients->create(compact("nom","contact"));
+           $client->createData(compact("nom","contact"));
             return $this->json([
                 'message'=>'Ok, Données enrgistrées avec success',
                 'icon'=>'success',
             ]);
+              
             
         }
         else {
@@ -77,7 +79,7 @@ class ClientController extends AbstractController
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($id) && !empty($nom) && !empty($contact)) { 
-            $client=$repo->getOne($id);
+            $client=$repo->getId($id);
             if (!$client) {
                 return $this->json([
                     'message'=>'Erreur, Ce client n\'existe pas dans notre base de données ! ',
@@ -85,7 +87,7 @@ class ClientController extends AbstractController
                 ]);
             }
             else {
-                $create=$repo->updateClient(compact("client","nom","contact"));
+                $create=$repo->updateData(compact("client","nom","contact"));
                 
                 return $this->json([
                     'message'=>'Ok, Données modifiées avec success',

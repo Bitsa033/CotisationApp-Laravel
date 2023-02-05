@@ -18,19 +18,21 @@ class C2 extends Toto
    * @param array $data
    * @return void
    */
-    public function create(array $data)
+    public function createData($clients)
     {
-      $table= new $this->table;
-      $table->setNom($data["nom"]);
-      $table->setContact($data["contact"]);
-       
-      $this->save($table);
+      // $table= new $this->table;
+      // $idClient=$this->getId($clients);
+      // $table->setNumero(rand(100,9000));
+      // $table->setSolde(0);
+      // $table->setDateT(new \dateTime());
+      // $table->setClient($clients);
+      // $this->save($table);
     }
 
-    public function updateClient(array $data)
+    public function updateData(array $data)
     {
-      $data['client']->setNom($data["nom"]);
-      $data['client']->setContact($data["contact"]);
+      $data['compte']->setSolde($data["solde"]);
+      $data['client']->setDateT($data["dateT"]);
        
       $this->update();
     }

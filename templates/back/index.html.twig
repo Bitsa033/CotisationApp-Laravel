@@ -1,24 +1,40 @@
+{% extends "base.html.twig" %}
 {% block body %}
-<div class="container">
-    <h1>Liste des comptes bancaires</h1>
-    <button class="btn btn-primary" data-toggle="modal" data-target="#compte"><i class="ti-plus"></i></button>
-    <table class="table table-bordered">
-        <thead>
-            <th>#</th>
-            <th>Num compte</th>
-            <th>Solde</th>
-            <th>Client</th>
-        </thead>
-    
-        <tbody>
-            {% for item in comptes %}
-            <td>{{item.id}}</td>
-            <td>{{item.numero}}</td>
-            <td>{{item.solde}}</td>
-            <td>{{item.client.nom}}</td>
-                
-            {% endfor %}
-        </tbody>
-    </table>
+<div id="wrapper">
+
+    <div class="container">
+        <h1>Liste des comptes bancaires</h1>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><button class="btn btn-primary" data-toggle="modal" data-target="#client">Compte <i class="ti-plus"></i></button></th>
+                    <th>#</th>
+                    <th>Num compte</th>
+                    <th>Solde</th>
+                    <th>Client</th>
+
+                </tr>
+            </thead>
+        
+            <tbody>
+                {% for item in comptes %}
+                <tr>
+                    <td><a class="btn_show_client btn btn-warning" href="{{path('consulterClient',{id:item.id})}}"></i> Dépot/Retrait</a></td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.numero}}</td>
+                    <td>{{item.solde}}</td>
+                    <td>{{item.client.nom}}</td>
+                    <td>
+                        <a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:item.id})}}"></i> Consulter</a>
+						<a class="btn_update_client btn btn-primary" href="{{path('consulterClient',{id:item.client.id})}}">Modifier</a>
+						<a class="removeOne btn btn-danger" href="{{path('deleteOneClient',{id:item.id})}}"></i> Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+<!--/wrapper-->
 {% endblock %}

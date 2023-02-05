@@ -33,16 +33,15 @@ class Toto extends AbstractController{
     }
     
     /**
-     * Cette méthode affiche un enregistrement d'une table
-     * par son id
+     * Cette méthode affiche l'id d'une table
      * @param integer $id
      * @return void
      */
-    public function getOne(int $id)
+    public function getId($id)
     {
       $repo=$this->repo=$this->getRepo();
-      $fetchOne =$repo->find($id);
-      return $fetchOne;
+      $fetchId =$repo->find($id);
+      return $fetchId;
     }
   
       /**
@@ -69,7 +68,7 @@ class Toto extends AbstractController{
       public function deleteOne(int $id):void
       {
         $this->db=$this->getConnect();
-        $fid=$this->getOne($id);
+        $fid=$this->getId($id);
         $this->db->remove($fid);
         //$this->db->flush();
       }

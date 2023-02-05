@@ -1,10 +1,6 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Ajax
-{% endblock %}
 
 {% block body %}
-	<div class="container offset-1" id="wrapper">
+	<div class="container offset-1">
 		<h1>
 			<p style="color:aqua; display:inline-block ">Compte Bancaire Avec </p>
 			<p style="display:inline-block; color:blueviolet; ">symfony</p> 
@@ -14,7 +10,7 @@
 			<div class="col-md-12">
 				
     		<!-- Modal -->
-				<button class="btn btn-primary" data-toggle="modal" data-target="#client">Nouveau client <i class="ti-plus"></i></button>
+				{# <button class="btn btn-primary" data-toggle="modal" data-target="#client">Nouveau client <i class="ti-plus"></i></button> #}
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -33,9 +29,9 @@
 								<td>{{client.contact}}</td>
 								<td>
 									{# <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button> #}
-									<a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
+									{# <a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
 									<a class="btn_update_client btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
-									<a class="removeOne btn btn-danger" href="{{path('deleteOneClient',{id:client.id})}}"></i> Supprimer</a>
+									<a class="removeOne btn btn-danger" href="{{path('deleteOneClient',{id:client.id})}}"></i> Supprimer</a> #}
 								</td>
 							</tr>
 
