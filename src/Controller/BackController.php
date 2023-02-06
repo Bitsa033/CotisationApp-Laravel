@@ -21,12 +21,13 @@ class BackController extends AbstractController
     }
 
     /**
-     * @Route("compte_new", name="compte_new")
+     * @Route("compte_update", name="compte_update")
      */
-    public function compte_new(C2 $compte): Response
+    public function compte_update(C2 $compte): Response
     {
-        return $this->render('back/index.html.twig', [
-            'comptes' => $compte->getAll(),
+        return $this->json([
+            "message"=>"Le compte a été modifié avec success",
+            "icon"=>"success"
         ]);
     }
 }

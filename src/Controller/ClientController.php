@@ -24,7 +24,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * lien pour enregistrer un client
+     * lien pour enregistrer un client et son compte
      * @Route("insertClient", name="insertClient")
      */
     public function insertClient(Request $request,Clients $client)
@@ -38,7 +38,6 @@ class ClientController extends AbstractController
                 'icon'=>'success',
             ]);
               
-            
         }
         else {
             return $this->json([
@@ -59,10 +58,14 @@ class ClientController extends AbstractController
         $id2=$r->getId();
         $nom=$r->getNom();
         $contact=$r->getContact();
+        $solde_du_compte=$r->getCompte()->getSolde();
+        $numero_de_compte=$r->getCompte()->getNumero();
         return $this->json([
             'id'=>$id2,
             'nom'=>$nom,
             'contact'=>$contact,
+            'solde_du_compte'=>$solde_du_compte,
+            'numero_de_compte'=>$numero_de_compte,
             'icon'=>'success'
         ]);
         

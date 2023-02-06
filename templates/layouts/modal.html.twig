@@ -52,27 +52,28 @@
                 <div class="modal-body">
                   <form autocomplete="off" id="quickForm">
                       <div class="form-group">
-                        <input type="text" name="depot" class="form-control" id="depot" placeholder="Dépot" data-rule="minlen:1"
-                          data-msg="Entrer">
+                        <label for="id_depot">Numero de Compte</label>
+                        <input type="text" name="num_co" class="form-control" id="id_compte" disabled>
                         <div class="validate"></div>
                       </div>
                       <div class="form-group">
-                        <input type="name" name="retrait" class="form-control" id="retrait" placeholder="Retrait"
-                          data-rule="minlen:1" data-msg="Entrer">
+                        <label for="somme">Somme</label>
+                        <input type="name" name="" class="form-control" id="somme" placeholder="Entrer la Somme"
+                          >
                         <div class="validate"></div>
                       </div>
             
                       <div class="loading"></div>
                       <div class="error-message"></div>
-                      <div id="message"></div>
+                      <div class="message"></div>
             
                       {#
                     </form> #}
                 </div>
                 <div class="modal-footer">
                   <button type="reset" class="btn btn-info">Annuler</button>
-                  <button type="submit" class="btn btn-primary" id="insert">Enregistrer</button>
-                  <button type="submit" class="btn btn-warning" id="updatec">Modiier</button>
+                  <button type="submit" class="btn btn-primary" id="depot">Deposer</button>
+                  <button type="submit" class="btn btn-warning" id="retrait">Retirer</button>
                   <button type="button" class="btn btn-info" data-dismiss="modal">Femer</button>
                   </form>
                 </div>
@@ -132,36 +133,23 @@
                   </button>
               </div>
               <div class="modal-body">
-                    <div class="container">
-                        <div class="row container">
-                            <div class="col-md-12">
-                                <table class="table table-striped" id="table">
-                                    <thead>
-                                        <tr>
-                                            {# <th>#</th>
-                                            <th>Nom</th>
-                                            <th>Contact</th> #}
-                                            <th>Solde</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                    
-                                        <tr>
-                                            {# <td class="idc"></td>
-                                            <td class="nom"></td>
-                                            <td class="contact"></td> #}
-                                            <td>O FCA</td>
-                                        </tr>
-                    
-                                    </tbody>
-                                </table>
-                            </div>
-                            {# end col #}
-                        </div>
-                        {# end row #}
-                    
-                    </div>
-                    {# end container #}
+                
+              <div class="form-group">
+                  <label for="nom">Nom:</label>
+                <input type="text" name="" class="form-control" id="get_nom" disabled>
+                <div class="validate"></div>
+              </div>
+              
+              <div class="form-group">
+                 <label for="contact">Contact:</label>
+                <input type="text" name="" class="form-control" id="get_contact" disabled>
+                <div class="validate"></div>
+              </div>
+              <div class="form-group">
+                <label for="contact">Solde du Compte:</label>
+               <input type="text" name="" class="form-control" id="solde_du_compte" disabled>
+               <div class="validate"></div>
+             </div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

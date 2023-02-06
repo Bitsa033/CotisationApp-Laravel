@@ -37,7 +37,7 @@ function insert(url1) {
     })
 }
 
-function update(url1,url2) {
+function update(url1,url2,url3,url4) {
     $(document).ready(function () {
         $("#update").click(function (e) {
             e.preventDefault()
@@ -49,6 +49,70 @@ function update(url1,url2) {
                 url: url1,
                 method: "POST",
                 data: {id:id, nom:name,contact:adresse },
+                success: function (data) {
+                    //console.log(data);
+                    // $('#quickForm')[0].reset()
+                    $('.message').html(data.message)
+                    $('.table').load(location.href+' .table-bordered')
+                    // location.href=url2
+                    if (data.icon=="success") {
+                        $('.message').css("color","green")
+                    }
+                    if (data.icon=="error"){
+
+                        $('.message').css("color","red")
+                    }
+                    //swal("Good job!", data.message, data.icon)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                }
+    
+            })
+    
+        })
+
+        $("#depot").click(function (e) {
+            e.preventDefault()
+            var id_compte = $('#id_compte').val()
+            var somme = $('#somme').val()
+            
+            $.ajax({
+                url: url3,
+                method: "POST",
+                data: {id:id_compte, somme:somme },
+                success: function (data) {
+                    //console.log(data);
+                    // $('#quickForm')[0].reset()
+                    $('.message').html(data.message)
+                    $('.table').load(location.href+' .table-bordered')
+                    // location.href=url2
+                    if (data.icon=="success") {
+                        $('.message').css("color","green")
+                    }
+                    if (data.icon=="error"){
+
+                        $('.message').css("color","red")
+                    }
+                    //swal("Good job!", data.message, data.icon)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                }
+    
+            })
+    
+        })
+
+        $("#retrait").click(function (e) {
+            e.preventDefault()
+            var id_compte = $('#id_compte').val()
+            var somme = $('#somme').val()
+            
+            $.ajax({
+                url: url4,
+                method: "POST",
+                data: {id:id_compte, somme:somme },
                 success: function (data) {
                     //console.log(data);
                     // $('#quickForm')[0].reset()
@@ -158,9 +222,31 @@ function showClient() {
                     console.log(data.id);
                     $('#exampleModalCenter').modal()
                     $('.modal-title').html('Client n°'+data.id)
-                    // $('.idc').html(data.id)
-                    // $('.nom').html(data.nom)
-                    // $('.contact').html(data.contact)
+                    $('#get_nom').val(data.nom)
+                    $('#get_contact').val(data.contact)
+                    $('#solde_du_compte').val(data.solde_du_compte)
+                    //swal("Good job!", data.message, data.icon)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                }
+    
+            })
+    
+        })
+
+        $(".btn_compte").click(function (e) {
+            e.preventDefault()
+            link=$(this).attr("href")
+            $.ajax({
+                url: link,
+                method: "GET",
+                success: function (data) {
+                    console.log(data.id);
+                    $('#compte').modal()
+                    $('.modal-title').html('Compte n°'+data.numero_de_compte)
+                    $('#id_compte').val(data.numero_de_compte)
+                    
                     //swal("Good job!", data.message, data.icon)
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
