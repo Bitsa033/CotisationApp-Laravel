@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Compte>
@@ -45,6 +46,55 @@ class CompteRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    // public function connection_to_databse(){
+
+    //     try {
+    //         $pdo=new \PDO('mysql:host=localhost;dbname=gnu','root','');
+    //     } catch (Exception $th) {
+    //         die( $th->getMessage());
+    //     }
+
+    //     return $pdo;
+    // }
+
+    public function deposer(Compte $compte,$somme)
+    {
+        $conn = $this->_em->getConnection();
+        $sql = '
+            update compte set solde = solde + :somme where id= :compte
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->executeQuery([
+            'compte'=>$compte->getId(),
+            'somme'=>$somme
+        ]);
+
+        //$resultat=$stmt->fetchAll();
+
+        // returns an array of arrays (i.e. a raw data set)
+        //return $resultat;
+        
+    }
+
+    public function retirer(Compte $compte,$somme)
+    {
+        $conn = $this->_em->getConnection();
+        $sql = '
+            update compte set solde = solde - :somme where id= :compte
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->executeQuery([
+            'compte'=>$compte->getId(),
+            'somme'=>$somme
+        ]);
+
+        //$resultat=$stmt->fetchAll();
+
+        // returns an array of arrays (i.e. a raw data set)
+        //return $resultat;
+        
     }
 
     // /**

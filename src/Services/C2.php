@@ -29,12 +29,22 @@ class C2 extends Toto
       // $this->save($table);
     }
 
-    public function updateData(array $data)
+    public function depot(array $data,CompteRepository $repo)
     {
-      $data['compte']->setSolde($data["solde"]);
-      $data['client']->setDateT($data["dateT"]);
+      $repo->deposer($data['compte'],$data['somme']);
+      // $data['compte']->setSolde($data["somme"]);
+      // $data['compte']->setDateT(new \datetime());
        
-      $this->update();
+      // $this->update();
+    }
+
+    public function retrait(array $data,CompteRepository $repo)
+    {
+      $repo->retirer($data['compte'],$data['somme']);
+      // $data['compte']->setSolde($data["somme"]);
+      // $data['compte']->setDateT(new \datetime());
+       
+      // $this->update();
     }
         
     

@@ -37,7 +37,7 @@ function insert(url1) {
     })
 }
 
-function update(url1,url2,url3,url4) {
+function update(url1,url3,url4) {
     $(document).ready(function () {
         $("#update").click(function (e) {
             e.preventDefault()
@@ -54,7 +54,9 @@ function update(url1,url2,url3,url4) {
                     // $('#quickForm')[0].reset()
                     $('.message').html(data.message)
                     $('.table').load(location.href+' .table-bordered')
-                    // location.href=url2
+                    setInterval(() => {
+                        location.href="/"
+                    }, 3000);
                     if (data.icon=="success") {
                         $('.message').css("color","green")
                     }
@@ -86,7 +88,9 @@ function update(url1,url2,url3,url4) {
                     // $('#quickForm')[0].reset()
                     $('.message').html(data.message)
                     $('.table').load(location.href+' .table-bordered')
-                    // location.href=url2
+                    setInterval(() => {
+                        location.href="/"
+                    }, 3000);
                     if (data.icon=="success") {
                         $('.message').css("color","green")
                     }
@@ -114,11 +118,11 @@ function update(url1,url2,url3,url4) {
                 method: "POST",
                 data: {id:id_compte, somme:somme },
                 success: function (data) {
-                    //console.log(data);
-                    // $('#quickForm')[0].reset()
                     $('.message').html(data.message)
                     $('.table').load(location.href+' .table-bordered')
-                    // location.href=url2
+                    setInterval(() => {
+                        location.href="/"
+                    }, 3000);
                     if (data.icon=="success") {
                         $('.message').css("color","green")
                     }
@@ -147,8 +151,6 @@ function remove(url1,url2) {
                 url: url1,
                 method: "POST",
                 success: function (data) {
-                    //console.log(data);
-                    // $('#quickForm')[0].reset()
                     $('.table').load(location.href+' .table-bordered')
                     alert(data.message)
                     //swal("Good job!", data.message, data.icon)
@@ -168,8 +170,6 @@ function remove(url1,url2) {
                 url: link,
                 method: "GET",
                 success: function (data) {
-                    //console.log(data);
-                    // $('#quickForm')[0].reset()
                     $('.table').load(location.href+' .table-bordered')
                     alert(data.message)
                     location.href=url2
@@ -224,7 +224,7 @@ function showClient() {
                     $('.modal-title').html('Client n°'+data.id)
                     $('#get_nom').val(data.nom)
                     $('#get_contact').val(data.contact)
-                    $('#solde_du_compte').val(data.solde_du_compte)
+                    $('#solde_du_compte').val(data.solde_du_compte+" FCFA")
                     //swal("Good job!", data.message, data.icon)
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -244,8 +244,8 @@ function showClient() {
                 success: function (data) {
                     console.log(data.id);
                     $('#compte').modal()
-                    $('.modal-title').html('Compte n°'+data.numero_de_compte)
-                    $('#id_compte').val(data.numero_de_compte)
+                    $('.modal-title').html('Compte n°'+data.numero_de_compte+" Solde: "+data.solde_du_compte+" FCFA")
+                    $('#id_compte').val(data.compte_id)
                     
                     //swal("Good job!", data.message, data.icon)
                 },

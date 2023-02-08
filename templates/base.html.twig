@@ -44,10 +44,11 @@
 		var insertClient= "{{path('insertClient')}}"
 		var updateClient= "{{path('updateClient')}}"
 		var deleteClient= "{{path('deleteClient')}}"
-		var depotCompte= "{{path('compte_update')}}"
-		var index= "{{path('clients')}}"
+		var depotCompte= "{{path('depotCompte')}}"
+		var retraitCompte= "{{path('retraitCompte')}}"
+		var index= "{{path('comptes')}}"
 		insert(insertClient,index)
-		update(updateClient,index,depotCompte,depotCompte)
+		update(updateClient,depotCompte,retraitCompte)
 
 		remove(deleteClient,index)
 		showClient()

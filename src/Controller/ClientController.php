@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 use App\Repository\ClientRepository;
-use App\Services\C2;
 use App\Services\Clients;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +14,11 @@ class ClientController extends AbstractController
      * lien qui affiche la liste des clients
      * @Route("clients", name="clients")
      */
-    public function index(Clients $clients): Response
+    public function index(Clients $service): Response
     {
         // dd($d=$clients->readOneData(8));
         return $this->render('client/index.html.twig', [
-            'clients'=>$clients->getAll()
+            'clients'=>$service->getAll()
         ]);
     }
 
@@ -27,12 +26,12 @@ class ClientController extends AbstractController
      * lien pour enregistrer un client et son compte
      * @Route("insertClient", name="insertClient")
      */
-    public function insertClient(Request $request,Clients $client)
+    public function insertClient(Request $request,Clients $service)
     {
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($nom) && !empty($contact)) {
-           $client->createData(compact("nom","contact"));
+           $service->createData(compact("nom","contact"));
             return $this->json([
                 'message'=>'Ok, Données enrgistrées avec success',
                 'icon'=>'success',
@@ -49,7 +48,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * lien pour consulter un seul client par son id
+     * lien pour consulter un seul client et son compte, par son id
      * @Route("consulterClient_{id}", name="consulterClient")
      */
     function consulterClient(ClientRepository $client,$id)
@@ -59,12 +58,14 @@ class ClientController extends AbstractController
         $nom=$r->getNom();
         $contact=$r->getContact();
         $solde_du_compte=$r->getCompte()->getSolde();
+        $compte_id=$r->getCompte()->getId();
         $numero_de_compte=$r->getCompte()->getNumero();
         return $this->json([
             'id'=>$id2,
             'nom'=>$nom,
             'contact'=>$contact,
             'solde_du_compte'=>$solde_du_compte,
+            'compte_id'=>$compte_id,
             'numero_de_compte'=>$numero_de_compte,
             'icon'=>'success'
         ]);
@@ -76,13 +77,13 @@ class ClientController extends AbstractController
      * lien pour modifier un client qu'on a déja enregistré
      * @Route("updateClient", name="updateClient")
      */
-    function updateClient(Request $request,Clients $repo)
+    function updateClient(Request $request,Clients $service)
     {
         $id=$request->request->get('id');
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($id) && !empty($nom) && !empty($contact)) { 
-            $client=$repo->getId($id);
+            $client=$service->getId($id);
             if (!$client) {
                 return $this->json([
                     'message'=>'Erreur, Ce client n\'existe pas dans notre base de données ! ',
@@ -90,7 +91,7 @@ class ClientController extends AbstractController
                 ]);
             }
             else {
-                $create=$repo->updateData(compact("client","nom","contact"));
+                $create=$service->updateData(compact("client","nom","contact"));
                 
                 return $this->json([
                     'message'=>'Ok, Données modifiées avec success',
@@ -112,9 +113,9 @@ class ClientController extends AbstractController
      * lien pour supprimer tous les clients
      * @Route("deleteClient", name="deleteClient")
      */
-    public function deleteClient(Clients $clients)
+    public function deleteClient(Clients $service)
     {
-        $clients->delete();
+        $service->delete();
         
         return $this->json([
             'message'=>'Ok, la base de donnée est vide !',
@@ -127,10 +128,10 @@ class ClientController extends AbstractController
      * lien pour supprimer un seul client
      * @Route("deleteOneClient_{id}", name="deleteOneClient")
      */
-    public function deleteOneClient(Clients $clients,$id)
+    public function deleteOneClient(Clients $service,$id)
     {
         if (!empty($id)) {
-            $clients->deleteOne($id);
+            $service->deleteOne($id);
             
             return $this->json([
                 'message'=>'Ok, le client a été supprimé !',
