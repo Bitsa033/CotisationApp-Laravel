@@ -14,7 +14,7 @@ use App\Repository\ClientRepository;
   }
 
   /**
-   * Cette méthode construit les données d'une table et les 
+   * Cette méthode construit les données des tables [Client et Compte] et les 
    * enregistre
    * @param array $data
    * @return void
@@ -31,8 +31,6 @@ use App\Repository\ClientRepository;
       $c->setDateT(new \dateTime());
       $c->setClient($table);
       $this->save($c);
-      // $this->save($table);
-      //$c->createData($table);
     }
 
     public function updateData(array $data)

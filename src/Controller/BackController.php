@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Controller;
-
-use App\Repository\CompteRepository;
 use App\Services\C2;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +24,7 @@ class BackController extends AbstractController
      * lien pour ajouter une somme dans le compte
      * @Route("depotCompte", name="depotCompte")
      */
-    function depotCompte(Request $request,C2 $service, CompteRepository $c)
+    function depotCompte(Request $request,C2 $service)
     {
         $id=$request->request->get('id');
         $somme=$request->request->get('somme');
@@ -39,7 +37,7 @@ class BackController extends AbstractController
                 ]);
             }
             else {
-                $create=$service->depot(compact("compte","somme"),$c);
+                $create=$service->depot(compact("compte","somme"));
                 
                 return $this->json([
                     'message'=>'Ok, Dépot effectué avec success',
@@ -61,7 +59,7 @@ class BackController extends AbstractController
      * lien pour ajouter une somme dans le compte
      * @Route("retraitCompte", name="retraitCompte")
      */
-    function retraitCompte(Request $request,C2 $service, CompteRepository $c)
+    function retraitCompte(Request $request,C2 $service)
     {
         $id=$request->request->get('id');
         $somme=$request->request->get('somme');
@@ -74,7 +72,7 @@ class BackController extends AbstractController
                 ]);
             }
             else {
-                $create=$service->retrait(compact("compte","somme"),$c);
+                $create=$service->retrait(compact("compte","somme"));
                 
                 return $this->json([
                     'message'=>'Ok, Retrait effectué avec success',

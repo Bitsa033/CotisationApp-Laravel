@@ -12,39 +12,15 @@ class C2 extends Toto
     $this->repo=$repo;
   }
 
-  /**
-   * Cette méthode construit les données d'une table et les 
-   * l'enregistre
-   * @param array $data
-   * @return void
-   */
-    public function createData($clients)
+    public function depot(array $data)
     {
-      // $table= new $this->table;
-      // $idClient=$this->getId($clients);
-      // $table->setNumero(rand(100,9000));
-      // $table->setSolde(0);
-      // $table->setDateT(new \dateTime());
-      // $table->setClient($clients);
-      // $this->save($table);
+      $this->repo->deposer($data['compte'],$data['somme']);
     }
 
-    public function depot(array $data,CompteRepository $repo)
+    public function retrait(array $data)
     {
-      $repo->deposer($data['compte'],$data['somme']);
-      // $data['compte']->setSolde($data["somme"]);
-      // $data['compte']->setDateT(new \datetime());
+      $this->repo->retirer($data['compte'],$data['somme']);
        
-      // $this->update();
-    }
-
-    public function retrait(array $data,CompteRepository $repo)
-    {
-      $repo->retirer($data['compte'],$data['somme']);
-      // $data['compte']->setSolde($data["somme"]);
-      // $data['compte']->setDateT(new \datetime());
-       
-      // $this->update();
     }
         
     
