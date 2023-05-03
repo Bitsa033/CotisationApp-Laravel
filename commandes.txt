@@ -1,0 +1,2 @@
+php -S localhost:8001 -t public #pour lancer le serveur de php
+git remote set-url  origin https://github.com/Bitsa033/GestionPortefeuille #pour changer le lien du repository
