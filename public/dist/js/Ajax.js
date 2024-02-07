@@ -120,9 +120,9 @@ function update(url1,url3,url4) {
                 success: function (data) {
                     $('.message').html(data.message)
                     $('.table').load(location.href+' .table-bordered')
-                    setInterval(() => {
-                        location.href="/"
-                    }, 3000);
+                    // setInterval(() => {
+                    //     location.href="/"
+                    // }, 3000);
                     if (data.icon=="success") {
                         $('.message').css("color","green")
                     }

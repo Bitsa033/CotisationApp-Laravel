@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controller;
+
+use App\Repository\CompteRepository;
 use App\Services\C2;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,20 +61,24 @@ class BackController extends AbstractController
      * lien pour ajouter une somme dans le compte
      * @Route("retraitCompte", name="retraitCompte")
      */
-    function retraitCompte(Request $request,C2 $service)
+    function retraitCompte(Request $request,C2 $service,CompteRepository $k)
     {
         $id=$request->request->get('id');
         $somme=$request->request->get('somme');
+        $id_compte=$k->find($id);
+        $solde_courant=$id_compte->getSolde();
+        
+        //dd($solde_courant);
         if (!empty($id) && !empty($somme)) { 
-            $compte=$service->getId($id);
-            if (!$compte) {
+            if ($solde_courant<$somme) {
                 return $this->json([
-                    'message'=>'Erreur, Ce compte n\'existe pas dans notre base de données ! ',
+                    'message'=>'Erreur, Votre solde est insuffisant, veuillez recharger votre compte et recommencez ! ',
                     'icon'=>'error',
                 ]);
             }
+            
             else {
-                $create=$service->retrait(compact("compte","somme"));
+                $create=$service->retrait(compact("id_compte","somme"));
                 
                 return $this->json([
                     'message'=>'Ok, Retrait effectué avec success',

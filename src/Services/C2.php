@@ -19,7 +19,7 @@ class C2 extends Toto
 
     public function retrait(array $data)
     {
-      $this->repo->retirer($data['compte'],$data['somme']);
+      $this->repo->retirer($data['id_compte'],$data['somme']);
        
     }
         
