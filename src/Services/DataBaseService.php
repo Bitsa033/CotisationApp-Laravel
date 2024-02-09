@@ -3,7 +3,7 @@ namespace App\Services;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class Toto extends AbstractController{
+class DataBaseService extends AbstractController{
 
     protected $table;
     protected $repo;
