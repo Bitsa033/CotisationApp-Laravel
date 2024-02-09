@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Controller;
-use App\Repository\ClientRepository;
-use App\Services\Clients;
 use App\Services\ClientService;
 use App\Services\DataBaseService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +13,7 @@ class ClientController extends DataBaseService
      * lien qui affiche la liste des clients
      * @Route("clients", name="clients")
      */
-    public function index(ClientService $service): Response
+    public function findAllData(ClientService $service): Response
     {
         // dd($d=$clients->readOneData(8));
         return $this->render('client/index.html.twig', [
@@ -28,7 +25,7 @@ class ClientController extends DataBaseService
      * lien pour enregistrer un client et son compte
      * @Route("insertClient", name="insertClient")
      */
-    public function insertClient(Request $request,ClientService $service)
+    public function insertData(Request $request,ClientService $service)
     {
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
@@ -50,13 +47,12 @@ class ClientController extends DataBaseService
     }
 
     /**
-     * lien pour consulter un seul client et son compte, par son id
-     * @Route("consulterClient_{id}", name="consulterClient")
+     * lien pour consulter un seul client par son id
+     * @Route("consulterClient/{id}", name="consulterClient")
      */
-    function consulterClient(ClientService $service, Request $request)
+    function findOneData(ClientService $service,$id)
     {
-        $id_get=$request->query->get("id");
-        $client=$service->getRepo()->find($id_get);
+        $client=$service->getRepo()->find($id);
         $id_client=$client->getId();
         $nom=$client->getNom();
         $contact=$client->getContact();
@@ -80,7 +76,7 @@ class ClientController extends DataBaseService
      * lien pour modifier un client qu'on a déja enregistré
      * @Route("updateClient", name="updateClient")
      */
-    function updateClient(Request $request,ClientService $service)
+    function updateData(Request $request,ClientService $service)
     {
         $id=$request->request->get('id');
         $nom=$request->request->get('nom');
@@ -116,12 +112,12 @@ class ClientController extends DataBaseService
      * lien pour supprimer tous les clients
      * @Route("deleteClient", name="deleteClient")
      */
-    public function deleteClient(ClientService $service)
+    public function deleteAllData(ClientService $service)
     {
         $service->delete();
         
         return $this->json([
-            'message'=>'Ok, la base de donnée est vide !',
+            'message'=>'Ok, liste des données supprimée avec succès !',
             'icon'=>'success'
         ]);
 
@@ -131,7 +127,7 @@ class ClientController extends DataBaseService
      * lien pour supprimer un seul client
      * @Route("deleteOneClient_{id}", name="deleteOneClient")
      */
-    public function deleteOneClient(ClientService $service,$id)
+    public function deleteOneData(ClientService $service,$id)
     {
         if (!empty($id)) {
             $service->deleteOne($id);

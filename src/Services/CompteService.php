@@ -19,10 +19,20 @@ class CompteService  extends DataBaseService implements CompteInterface
 
   function debiter($numeroCompte, $montant)
   {
+    $c= $this->getRepo()->find($numeroCompte);
+    $solde_courant=$c->getSolde();
+    $solde_actuel=$solde_courant-$montant;
+    $c->setSolde($solde_actuel);
+    $this->save($c);
   }
 
   public function crediter($numeroCompte, $montant)
   {
+    $c= $this->getRepo()->find($numeroCompte);
+    $solde_courant=$c->getSolde();
+    $solde_actuel=$solde_courant+$montant;
+    $c->setSolde($solde_actuel);
+    $this->save($c);
   }
 
   public function consulter($numeroCompte)

@@ -16,7 +16,7 @@ class DataBaseService extends AbstractController{
   
     public function getRepo()
     {
-      return $this->db= $this->getDoctrine()->getRepository($this->table);
+      return $this->getDoctrine()->getRepository($this->table);
     }
   
     /**

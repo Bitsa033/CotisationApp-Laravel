@@ -16,7 +16,7 @@ class BackController extends AbstractController
      * lien pour afficher tous les comptes
      * @Route("/", name="comptes")
      */
-    public function index(CompteService $service): Response
+    public function listeComptes(CompteService $service): Response
     {
         return $this->render('back/index.html.twig', [
             'comptes' => $service->getRepo()->findAll()
@@ -40,7 +40,7 @@ class BackController extends AbstractController
                 ]);
             }
             else {
-                $service->debiter($id,$somme);
+                $service->crediter($id,$somme);
                 
                 return $this->json([
                     'message'=>'Ok, Dépot effectué avec success',
