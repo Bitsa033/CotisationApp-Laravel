@@ -4,13 +4,12 @@ use App\Entity\Client;
 use App\Entity\Compte;
 use App\Repository\ClientRepository;
 
-  class Clients extends Toto
+  class ClientService extends DataBaseService
 {
 
-  public function __construct(ClientRepository $repo)
+  public function __construct()
   {
     $this->table= Client::class;
-    $this->repo=$repo;
   }
 
   /**

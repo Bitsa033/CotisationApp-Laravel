@@ -3,22 +3,24 @@
 namespace App\Controller;
 use App\Repository\ClientRepository;
 use App\Services\Clients;
+use App\Services\ClientService;
+use App\Services\DataBaseService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ClientController extends AbstractController
+class ClientController extends DataBaseService
 {
     /**
      * lien qui affiche la liste des clients
      * @Route("clients", name="clients")
      */
-    public function index(Clients $service): Response
+    public function index(ClientService $service): Response
     {
         // dd($d=$clients->readOneData(8));
         return $this->render('client/index.html.twig', [
-            'clients'=>$service->getAll()
+            'clients'=>$service->getRepo()->findAll()
         ]);
     }
 
@@ -26,7 +28,7 @@ class ClientController extends AbstractController
      * lien pour enregistrer un client et son compte
      * @Route("insertClient", name="insertClient")
      */
-    public function insertClient(Request $request,Clients $service)
+    public function insertClient(Request $request,ClientService $service)
     {
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
@@ -51,17 +53,18 @@ class ClientController extends AbstractController
      * lien pour consulter un seul client et son compte, par son id
      * @Route("consulterClient_{id}", name="consulterClient")
      */
-    function consulterClient(ClientRepository $client,$id)
+    function consulterClient(ClientService $service, Request $request)
     {
-        $r=$client->find($id);
-        $id2=$r->getId();
-        $nom=$r->getNom();
-        $contact=$r->getContact();
-        $solde_du_compte=$r->getCompte()->getSolde();
-        $compte_id=$r->getCompte()->getId();
-        $numero_de_compte=$r->getCompte()->getNumero();
+        $id_get=$request->query->get("id");
+        $client=$service->getRepo()->find($id_get);
+        $id_client=$client->getId();
+        $nom=$client->getNom();
+        $contact=$client->getContact();
+        $solde_du_compte=$client->getCompte()->getSolde();
+        $compte_id=$client->getCompte()->getId();
+        $numero_de_compte=$client->getCompte()->getNumero();
         return $this->json([
-            'id'=>$id2,
+            'id'=>$id_client,
             'nom'=>$nom,
             'contact'=>$contact,
             'solde_du_compte'=>$solde_du_compte,
@@ -77,7 +80,7 @@ class ClientController extends AbstractController
      * lien pour modifier un client qu'on a déja enregistré
      * @Route("updateClient", name="updateClient")
      */
-    function updateClient(Request $request,Clients $service)
+    function updateClient(Request $request,ClientService $service)
     {
         $id=$request->request->get('id');
         $nom=$request->request->get('nom');
@@ -113,7 +116,7 @@ class ClientController extends AbstractController
      * lien pour supprimer tous les clients
      * @Route("deleteClient", name="deleteClient")
      */
-    public function deleteClient(Clients $service)
+    public function deleteClient(ClientService $service)
     {
         $service->delete();
         
@@ -128,7 +131,7 @@ class ClientController extends AbstractController
      * lien pour supprimer un seul client
      * @Route("deleteOneClient_{id}", name="deleteOneClient")
      */
-    public function deleteOneClient(Clients $service,$id)
+    public function deleteOneClient(ClientService $service,$id)
     {
         if (!empty($id)) {
             $service->deleteOne($id);
