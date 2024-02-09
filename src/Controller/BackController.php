@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\CompteRepository;
 use App\Services\C2;
+use App\Services\CompteService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +16,10 @@ class BackController extends AbstractController
      * lien pour afficher tous les comptes
      * @Route("/", name="comptes")
      */
-    public function index(C2 $service): Response
+    public function index(CompteService $service): Response
     {
         return $this->render('back/index.html.twig', [
-            'comptes' => $service->getAll(),
+            'comptes' => $service->getRepo()->findAll()
         ]);
     }
 
@@ -26,7 +27,7 @@ class BackController extends AbstractController
      * lien pour ajouter une somme dans le compte
      * @Route("depotCompte", name="depotCompte")
      */
-    function depotCompte(Request $request,C2 $service)
+    function depotCompte(Request $request,CompteService $service)
     {
         $id=$request->request->get('id');
         $somme=$request->request->get('somme');
@@ -39,7 +40,7 @@ class BackController extends AbstractController
                 ]);
             }
             else {
-                $create=$service->depot(compact("compte","somme"));
+                $create=$service->debiter($id,$somme);
                 
                 return $this->json([
                     'message'=>'Ok, Dépot effectué avec success',
@@ -61,7 +62,7 @@ class BackController extends AbstractController
      * lien pour ajouter une somme dans le compte
      * @Route("retraitCompte", name="retraitCompte")
      */
-    function retraitCompte(Request $request,C2 $service,CompteRepository $k)
+    function retraitCompte(Request $request,CompteService $service,CompteRepository $k)
     {
         $id=$request->request->get('id');
         $somme=$request->request->get('somme');
@@ -78,7 +79,7 @@ class BackController extends AbstractController
             }
             
             else {
-                $create=$service->retrait(compact("id_compte","somme"));
+                $create=$service->debiter($id_compte,$somme);
                 
                 return $this->json([
                     'message'=>'Ok, Retrait effectué avec success',
