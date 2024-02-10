@@ -2,12 +2,11 @@
 {% block body %}
 	<div class="container offset-1">
 		<h1>
-			<p style="color:aqua; display:inline-block ">Gestion du Portefeuille Avec </p>
-			<p style="display:inline-block; color:blueviolet; ">symfony</p> 
-			<p style="display:inline-block; color:chartreuse; ">et</p> 
-			<p style="display:inline-block ; color:cornflowerblue">Ajax</p></h1>
+			<p style="color:aqua; display:inline-block ">Liste des </p>
+			<p style="display:inline-block; color:chartreuse; ">Clients</p> 
+		</h1>
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-6">
 				
     		<!-- Modal -->
 				{# <button class="btn btn-primary" data-toggle="modal" data-target="#client">Nouveau client <i class="ti-plus"></i></button> #}
@@ -19,7 +18,6 @@
 							<th>#</th>
 							<th>Nom</th>
 							<th>Contact</th>
-							{# <th style="width: 30%;">Options</th> #}
 						</tr>
 					</thead>
 					
@@ -29,12 +27,12 @@
 								<td>{{client.id}}</td>
 								<td>{{client.nom}}</td>
 								<td>{{client.contact}}</td>
-								<td>
+								{# <td>
 									{# <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button> #}
 									{# <a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
 									<a class="btn_update_client btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
-									<a class="removeOne btn btn-danger" href="{{path('deleteOneClient',{id:client.id})}}"></i> Supprimer</a> #}
-								</td>
+									<a class="removeOne btn btn-danger" href="{{path('deleteOneClient',{id:client.id})}}"></i> Supprimer</a>
+								</td> #}
 							</tr>
 
 						{% else %}
