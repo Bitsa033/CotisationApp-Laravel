@@ -56,7 +56,7 @@
                       </div>
                       <div class="form-group">
                         <label for="somme">Somme</label>
-                        <input type="text" name="somme" class="form-control" id="somme" placeholder="Entrer la Somme"
+                        <input type="text" name="somme" class="form-control" id="somme" placeholder="Entrer la Somme" required
                           >
                         <div class="validate"></div>
                       </div>
@@ -69,9 +69,55 @@
                     </form> #}
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
-                  <button type="submit" class="btn btn-primary" id="depot">Deposer</button>
-                  <button type="submit" class="btn btn-warning" id="retrait">Retirer</button>
+                    <button type="submit" class="btn btn-primary" id="depot">Déposer</button>
+                    <button type="submit" class="btn btn-warning" id="retrait">Retirer</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="virement">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enregistrer une oppération sur le Compte</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  <form autocomplete="off" id="quickForm">
+                      <div class="form-group">
+                        <label for="id_depot">Numero de Compte du débiteur</label>
+                        <input type="text" name="id_compte" class="form-control" id="id_compte" disabled>
+                        <div class="validate"></div>
+                      </div>
+                      <div class="form-group">
+                        <label for="somme">Numero de compte du créditeur</label>
+                        <input type="text" name="crediteur" class="form-control" id="crediteur" placeholder="Entrer le numero de compte du créditeur" required
+                          >
+                        <div class="validate"></div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="somme">Somme</label>
+                        <input type="text" name="somme" class="form-control" id="somme" placeholder="Entrer la Somme" required
+                          >
+                        <div class="validate"></div>
+                      </div>
+            
+                      <div class="loading"></div>
+                      <div class="error-message"></div>
+                      <div class="message"></div>
+            
+                      {#
+                    </form> #}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="depot">Déposer</button>
+                    <button type="submit" class="btn btn-warning" id="retrait">Retirer</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
                   </form>
                 </div>
             </div>

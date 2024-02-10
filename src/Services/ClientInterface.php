@@ -3,9 +3,9 @@ namespace App\Services;
 
 interface ClientInterface{
 
-    function creer();
-    function modifier();
-    function consulter($id);
-    function supprimer($id);
+    function createData(array $data);
+    function updateData(array $data);
+    function findAllData($id);
+    function deleteOneData($id);
 
 }

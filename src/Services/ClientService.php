@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Entity\Client;
 use App\Entity\Compte;
 
-class ClientService extends CompteService
+class ClientService extends DataBaseService implements ClientInterface
 {
 
   public function __construct()
@@ -38,5 +38,15 @@ class ClientService extends CompteService
     $data['client']->setNom($data["nom"]);
     $data['client']->setContact($data["contact"]);
     $this->update();
+  }
+
+  public function findAllData($id)
+  {
+    
+  }
+
+  public function deleteOneData($id)
+  {
+    
   }
 }

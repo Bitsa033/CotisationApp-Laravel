@@ -11,7 +11,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th><button class="btn btn-primary" data-toggle="modal" data-target="#client">Compte <i class="ti-plus"></i></button></th>
+                    <th><button class="btn btn-primary" data-toggle="modal" data-target="#client">Nouveau Compte <i class="ti-plus"></i></button></th>
                     <th>Num compte</th>
                     <th colspan="3">Client</th>
                 </tr>
@@ -20,7 +20,11 @@
             <tbody>
                 {% for item in comptes %}
                 <tr>
-                    <td style="width: 3px;"><a class="btn_compte btn btn-warning" href="{{path('consulterClient',{id:item.id})}}"></i> Options</a></td>
+                    <td style="width: 280px;">
+                        <a class="btn_compte btn btn-warning" href="{{path('consulterClient',{id:item.id})}}"></i> Dépots / Retraits</a>
+                        <a class="btn_compte btn btn-dark" href="{{path('consulterClient',{id:item.id})}}"></i> Virements</a>
+                    </td>
+                    
                     <td>{{item.numero}}</td>
                     <td style="width: 320px;">
                         <a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:item.id})}}"></i> Consulter</a>

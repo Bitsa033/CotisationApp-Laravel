@@ -48,7 +48,7 @@ class DataBaseService extends AbstractController{
        * Cette méthode supprime tous les enregistrements d'une table
        * @return void
        */
-      public function delete()
+      public function deleteAll()
       {
         $this->db=$this->getConnect();
         $this->repo=$this->getRepo();
@@ -92,8 +92,7 @@ class DataBaseService extends AbstractController{
        */
       public function update()
       {
-        $this->db=$this->getConnect();
-        $this->db->flush();
+        $this->getConnect()->flush();
       }
   
   
