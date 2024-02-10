@@ -114,7 +114,7 @@ class ClientController extends DataBaseService
      */
     public function deleteAllData(ClientService $service)
     {
-        $service->delete();
+        $service->deleteAll();
         
         return $this->json([
             'message'=>'Ok, liste des données supprimée avec succès !',
