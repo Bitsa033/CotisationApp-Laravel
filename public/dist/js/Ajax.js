@@ -108,40 +108,6 @@ function update(url1,url3,url4) {
     
         })
 
-        $("#virement").click(function (e) {
-            e.preventDefault()
-            var id_compte = $('#id_compte').val()
-            var somme = $('#somme').val()
-            
-            $.ajax({
-                url: url3,
-                method: "POST",
-                data: {id:id_compte, somme:somme },
-                success: function (data) {
-                    //console.log(data);
-                    // $('#quickForm')[0].reset()
-                    $('.message').html(data.message)
-                    $('.table').load(location.href+' .table-bordered')
-                    setInterval(() => {
-                        location.href="/"
-                    }, 3000);
-                    if (data.icon=="success") {
-                        $('.message').css("color","green")
-                    }
-                    if (data.icon=="error"){
-
-                        $('.message').css("color","red")
-                    }
-                    //swal("Good job!", data.message, data.icon)
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    console.log(textStatus)
-                }
-    
-            })
-    
-        })
-
         $("#retrait").click(function (e) {
             e.preventDefault()
             var id_compte = $('#id_compte').val()
@@ -280,6 +246,28 @@ function showClient() {
                     $('#compte').modal()
                     $('.modal-title').html('Compte n°'+data.numero_de_compte+" Solde: "+data.solde_du_compte+" FCFA")
                     $('#id_compte').val(data.compte_id)
+                    
+                    //swal("Good job!", data.message, data.icon)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                }
+    
+            })
+    
+        })
+
+        $(".btn_virement").click(function (e) {
+            e.preventDefault()
+            link=$(this).attr("href")
+            $.ajax({
+                url: link,
+                method: "GET",
+                success: function (data) {
+                    console.log(data.id);
+                    $('#virement').modal()
+                    $('.modal-title').html('Compte n°'+data.numero_de_compte+" Solde: "+data.solde_du_compte+" FCFA")
+                    $('#id_debit').val(data.compte_id)
                     
                     //swal("Good job!", data.message, data.icon)
                 },
