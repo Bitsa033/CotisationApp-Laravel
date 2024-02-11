@@ -27,7 +27,7 @@ class BackController extends CompteService
      */
     function depotCompte(Request $request)
     {
-        $id=$request->request->get('id');
+        $id=$request->query->get('id');
         $somme=$request->request->get('somme');
         if (!empty($id) && !empty($somme)) { 
             $compte=$this->getId($id);

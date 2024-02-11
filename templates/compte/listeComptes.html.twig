@@ -8,12 +8,14 @@
         <table class="table">
             <tr>
                 <th>Compte n°</th>
+                <th>Solde</th>
                 <th>Titulaire</th>
                 <th>Actions</th>
             </tr>
             {% for row in comptes %}
             <tr>
                 <td>{{row.numero}}</td>
+                <td>{{row.solde}} FCFA</td>
                 <td>{{row.client.nom}}</td>
                 <td>
                     <a class=" btn btn-warning" href="{{path('crediterCompte',{id:row.id})}}">Créditer le compte</a>
