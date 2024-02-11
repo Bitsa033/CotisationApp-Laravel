@@ -54,4 +54,33 @@ class CompteController extends CompteService
             'comptes' => $this->getRepo()->findAll()
         ]);
     }
+
+    
+    /**
+     * lien pour crediter un compte
+     * @Route("crediterCompteB", name="crediterCompteB")
+     */
+    function crediterCompteB(Request $request)
+    {
+        
+    }
+
+    /**
+     * lien pour crediter un compte
+     * @Route("debiterCompteB", name="debiterCompteB")
+     */
+    function debiterCompteB(Request $request)
+    {
+        
+    }
+
+
+    /**
+     * lien pour crediter un compte
+     * @Route("transfererArgentB", name="transfererArgentB")
+     */
+    function transfererArgentB(Request $request)
+    {
+        
+    }
 }
