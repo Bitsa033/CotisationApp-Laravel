@@ -63,8 +63,8 @@ class BackController extends CompteService
      */
     function retraitCompte(Request $request)
     {
-        $id=$request->request->get('id');
-        $somme=$request->request->get('somme');
+        $id=$request->query->get('id_compte');
+        $somme=$request->query->get('montant');
         $id_compte=$this->getRepo()->find($id);
         $solde_courant=$id_compte->getSolde();
         

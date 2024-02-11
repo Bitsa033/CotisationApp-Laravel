@@ -70,9 +70,10 @@ class CompteController extends CompteService
      * lien pour crediter un compte
      * @Route("debiterCompteB", name="debiterCompteB")
      */
-    function debiterCompteB(Request $request):Response
+    function debiterCompteB(Request $request, BackController $backController):Response
     {
-        return $this->json(["mes"=>"debiter"]);;
+        $backController->retraitCompte($request);
+        return $this->redirectToRoute("listeComptes");
     }
 
 
