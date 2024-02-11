@@ -60,18 +60,18 @@ class CompteController extends CompteService
      * lien pour crediter un compte
      * @Route("crediterCompteB", name="crediterCompteB")
      */
-    function crediterCompteB(Request $request)
+    function crediterCompteB(Request $request):Response
     {
-        return "crediter";
+        return $this->json(["mes"=>"crediter"]);;
     }
 
     /**
      * lien pour crediter un compte
      * @Route("debiterCompteB", name="debiterCompteB")
      */
-    function debiterCompteB(Request $request)
+    function debiterCompteB(Request $request):Response
     {
-        return "debiter";
+        return $this->json(["mes"=>"debiter"]);;
     }
 
 
@@ -79,8 +79,8 @@ class CompteController extends CompteService
      * lien pour crediter un compte
      * @Route("transfererArgentB", name="transfererArgentB")
      */
-    function transfererArgentB(Request $request)
+    function transfererArgentB(Request $request):Response
     {
-        return "transferer";
+        return $this->json(["mes"=>"transferer"]);;
     }
 }

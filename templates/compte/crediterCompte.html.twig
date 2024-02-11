@@ -2,7 +2,7 @@
 {% block body %}
 <div class="row">
     <div class="col-md-5 offset-1">
-        <form autocomplete="off" id="quickForm">
+        <form autocomplete="off" id="quickForm" action="{{path('crediterCompteB')}}">
             <div class="form-group">
                 <label for="id_depot">Numero de Compte</label>
                 <input type="text" name="id_compte" class="form-control" id="id_compte" disabled>
@@ -19,7 +19,7 @@
             <div class="error-message"></div>
             <div class="message"></div>
         
-            <button type="submit" class="btn btn-primary" id="virement">Créditer le compte</button>
+            <button type="submit" class="btn btn-primary">Créditer le compte</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
         </form>
 
