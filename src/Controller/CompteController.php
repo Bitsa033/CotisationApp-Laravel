@@ -62,7 +62,7 @@ class CompteController extends CompteService
      */
     function crediterCompteB(Request $request)
     {
-        
+        return "crediter";
     }
 
     /**
@@ -71,7 +71,7 @@ class CompteController extends CompteService
      */
     function debiterCompteB(Request $request)
     {
-        
+        return "debiter";
     }
 
 
@@ -81,6 +81,6 @@ class CompteController extends CompteService
      */
     function transfererArgentB(Request $request)
     {
-        
+        return "transferer";
     }
 }
