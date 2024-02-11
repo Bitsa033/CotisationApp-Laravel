@@ -3,14 +3,12 @@
 namespace App\Controller;
 
 use App\Repository\CompteRepository;
-use App\Services\C2;
 use App\Services\CompteService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class BackController extends AbstractController
+class BackController extends CompteService
 {
     /**
      * lien pour afficher tous les comptes
@@ -19,7 +17,7 @@ class BackController extends AbstractController
     public function listeComptes(CompteService $service): Response
     {
         return $this->render('back/index.html.twig', [
-            'comptes' => $service->getRepo()->findAll()
+            'comptes' => $this->getRepo()->findAll()
         ]);
     }
 
@@ -27,20 +25,21 @@ class BackController extends AbstractController
      * lien pour ajouter une somme dans le compte
      * @Route("depotCompte", name="depotCompte")
      */
-    function depotCompte(Request $request,CompteService $service)
+    function depotCompte(Request $request)
     {
         $id=$request->request->get('id');
         $somme=$request->request->get('somme');
         if (!empty($id) && !empty($somme)) { 
-            $compte=$service->getId($id);
+            $compte=$this->getId($id);
             if (!$compte) {
                 return $this->json([
                     'message'=>'Erreur, Ce compte n\'existe pas dans notre base de données ! ',
                     'icon'=>'error',
                 ]);
             }
+            
             else {
-                $service->crediter($id,$somme);
+                $this->crediter($id,$somme);
                 
                 return $this->json([
                     'message'=>'Ok, Dépot effectué avec success',
@@ -62,11 +61,11 @@ class BackController extends AbstractController
      * lien pour ajouter une somme dans le compte
      * @Route("retraitCompte", name="retraitCompte")
      */
-    function retraitCompte(Request $request,CompteService $service,CompteRepository $k)
+    function retraitCompte(Request $request)
     {
         $id=$request->request->get('id');
         $somme=$request->request->get('somme');
-        $id_compte=$k->find($id);
+        $id_compte=$this->getRepo()->find($id);
         $solde_courant=$id_compte->getSolde();
         
         //dd($solde_courant);
@@ -79,7 +78,7 @@ class BackController extends AbstractController
             }
             
             else {
-                $create=$service->debiter($id_compte,$somme);
+                $this->debiter($id_compte,$somme);
                 
                 return $this->json([
                     'message'=>'Ok, Retrait effectué avec success',
@@ -101,8 +100,19 @@ class BackController extends AbstractController
      * lien pour ajouter une somme dans le compte
      * @Route("virerMontant", name="virerMontant")
      */
-    function virerMontant(Request $request,CompteService $service)
+    function virer(Request $request)
     {
+        // $id_post_deb=$request->request->get('id_post_deb');
+        $id_post_cred=$request->query->get('id_post_cred');
+        $somme=$request->request->get('somme');
+        // $compteDeb=$this->getRepo()->find($id_post_deb);
+        // $solde_courant=$compteDeb->getSolde();
+        $compteCred=$this->getRepo()->findOneBy(['numero'=>$id_post_cred]);
+        // dd($compteCred);
+        return $this->json([
+            'message'=>$compteCred,
+            'icon'=>'error'
+        ]);
     }
 
 }

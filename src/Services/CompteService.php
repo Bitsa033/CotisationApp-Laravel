@@ -41,6 +41,8 @@ class CompteService  extends DataBaseService implements CompteInterface
 
   public function virerMontant($numeroCompteDebiteur, $montant, $numeroCompteCrediteur)
   {
+    $this->debiter($numeroCompteDebiteur,$montant);
+    $this->crediter($numeroCompteCrediteur,$montant);
   }
 
   public function activer($numeroCompte)

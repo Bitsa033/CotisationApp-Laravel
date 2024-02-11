@@ -37,7 +37,7 @@ function insert(url1) {
     })
 }
 
-function update(url1,url3,url4) {
+function update(url1,url3,url4,url5) {
     $(document).ready(function () {
         $("#update").click(function (e) {
             e.preventDefault()
@@ -120,11 +120,43 @@ function update(url1,url3,url4) {
                 success: function (data) {
                     $('.message').html(data.message)
                     $('.table').load(location.href+' .table-bordered')
-                    // setInterval(() => {
-                    //     location.href="/"
-                    // }, 3000);
                     if (data.icon=="success") {
                         $('.message').css("color","green")
+                        setInterval(() => {
+                            location.href="/"
+                        }, 3000);
+                    }
+                    if (data.icon=="error"){
+
+                        $('.message').css("color","red")
+                    }
+                    //swal("Good job!", data.message, data.icon)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                }
+    
+            })
+    
+        })
+
+        $("#virement").click(function (e) {
+            e.preventDefault()
+            var id_compte = $('#id_compte').val()
+            var somme = $('#somme').val()
+            
+            $.ajax({
+                url: url5,
+                method: "POST",
+                data: {id:id_compte, somme:somme },
+                success: function (data) {
+                    $('.message').html(data.message)
+                    $('.table').load(location.href+' .table-bordered')
+                    if (data.icon=="success") {
+                        $('.message').css("color","green")
+                        setInterval(() => {
+                            location.href="/"
+                        }, 3000);
                     }
                     if (data.icon=="error"){
 

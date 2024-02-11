@@ -130,7 +130,7 @@ class ClientController extends DataBaseService
     public function deleteOneData(ClientService $service,$id)
     {
         if (!empty($id)) {
-            $service->deleteOne($id);
+            $service->deleteOneData($id);
             
             return $this->json([
                 'message'=>'Ok, le client a été supprimé !',

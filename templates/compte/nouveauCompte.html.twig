@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<div class="row">
+    <div class="col-md-5 offset-3">
+        <form autocomplete="off" id="quickForm">
+            <div class="form-group">
+                <label for="id_debit">Numero de Compte du débiteur</label>
+                <input type="text" name="id_debit" class="form-control" id="id_debit" disabled>
+                <div class="validate"></div>
+            </div>
+            <div class="form-group">
+                <label for="credit">Numero de compte du créditeur</label>
+                <input type="text" name="credit" class="form-control" id="credit" required>
+                <div class="validate"></div>
+            </div>
+        
+            <div class="form-group">
+                <label for="somme">Montant à transferer</label>
+                <input type="text" name="montant" class="form-control" id="montant" required>
+                <div class="validate"></div>
+            </div>
+        
+            <div class="loading"></div>
+            <div class="error-message"></div>
+            <div class="message"></div>
+        
+            <button type="submit" class="btn btn-primary" id="virement">Transferer</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
+        </form>
+
+    </div>
+</div>
+
+
+{% endblock body %}
