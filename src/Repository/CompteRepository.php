@@ -59,16 +59,15 @@ class CompteRepository extends ServiceEntityRepository
     //     return $pdo;
     // }
 
-    public function deposer(Compte $compte,$somme)
+    public function getIdByNumero($numero)
     {
         $conn = $this->_em->getConnection();
         $sql = '
-            update compte set solde = solde + :somme where id= :compte
+            select id from compte where numero= :numero
         ';
         $stmt = $conn->prepare($sql);
         $stmt->executeQuery([
-            'compte'=>$compte->getId(),
-            'somme'=>$somme
+            'numero'=>$numero
         ]);
 
         //$resultat=$stmt->fetchAll();

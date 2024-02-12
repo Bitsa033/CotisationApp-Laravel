@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CompteRepository;
 use App\Services\CompteService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BackController extends CompteService
 {
     public $message;
+    public $numCompteRec;
     /**
      * lien pour afficher tous les comptes
      * @Route("/", name="comptes")
@@ -112,19 +114,23 @@ class BackController extends CompteService
      * lien pour transferer de l'argent d'un compte à au autre
      * @Route("virerMontant", name="virerMontant")
      */
-    function virer($id_compteDebiteur,$montant,$id_compteReceveur)
+    function virer($num_compteDebiteur,$montant,$num_compteReceveur)
     {
+        $repo=CompteRepository::class;
         // $id_post_deb=$request->request->get('id_post_deb');
         // $compteDeb=$this->getRepo()->find($id_post_deb);
         // $solde_courant=$compteDeb->getSolde();
         // $id_compteDebiteur_db=$this->getRepo()->find($id_compteDebiteur);
-        // $id_compteCrediteur_db=$this->getRepo()->findBy(['numero'=>$id_compteReceveur]);
-        dd($id_compteReceveur);
+        // $this->numCompteRec=$id_compteReceveur_db;
+        $this->numCompteRec=$num_compteReceveur;
+        if (!empty($this->numCompteRec)) {
+            $id_compteReceveur_db=$this->repo->getIdByNumero("2242");
+            # code...
+            dd($this->numCompteRec);
+        }
         // return $this->message = $this->json([
-        //     // 'id_compte_deb_db'=>$id_compteDebiteur_db,
-        //     'id_compte_cred_db'=>$id_compteReceveur,
-        //     'montant'=>$montant,
-        //     'icon'=>'success'
+        //     'message'=>'Ok, Transfert effectué avec success',
+        //     'icon'=>'success',
         // ]);
     }
 

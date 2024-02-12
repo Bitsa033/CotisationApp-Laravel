@@ -25,6 +25,17 @@ class CompteController extends CompteService
     }
 
     /**
+     * lien pour afficher tous les comptes
+     * @Route("nouveauCompte", name="nouveauCompte")
+     */
+    function nouveauCompte(): Response
+    {
+        return $this->render("compte/nouveauCompte.html.twig", [
+            'comptes' => $this->getRepo()->findAll()
+        ]);
+    }
+
+    /**
      * lien pour crediter un compte
      * @Route("crediterCompte", name="crediterCompte")
      */
@@ -109,13 +120,13 @@ class CompteController extends CompteService
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $post_montant = $request->request->get('montant');
         $post_num_compte_receveur = $request->request->get('num_compte_receveur');
-        if (!empty($post_num_compte_receveur)) {
-            # code...
-            dd($id_compte_courant,$post_montant,$post_num_compte_receveur);
-        }
+        // if (!empty($post_num_compte_receveur)) {
+        //     # code...
+        //     dd($id_compte_courant,$post_montant,$post_num_compte_receveur);
+        // }
 
 
-        // $backController->virer($id_compte_courant,$post_montant,$num_compte_receveur);
-        // return $backController->message;
+        $backController->virer($id_compte_courant,$post_montant,$post_num_compte_receveur);
+        // return $backController->numCompteRec;
     }
 }
