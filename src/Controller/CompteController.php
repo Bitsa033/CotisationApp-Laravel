@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Services\ClientService;
 use App\Services\CompteService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,6 +74,27 @@ class CompteController extends CompteService
         return $this->render("compte/transfererMontant.html.twig", []);
     }
 
+    /**
+     * lien pour enregistrer un client et son compte
+     * @Route("nouveauCompteB", name="nouveauCompteB")
+     */
+    public function nouveauCompteB(Request $request,ClientService $service)
+    {
+        $nom=$request->request->get('nom');
+        $contact=$request->request->get('contact');
+        if (!empty($nom) && !empty($contact)) {
+           $service->createData(compact("nom","contact"));
+           $this->addFlash('success','Création du compte réussi !');
+            return $this->redirect('listeComptes');
+              
+        }
+        else {
+            $this->addFlash('erreur','Remplissez votre formulaire !');
+            return $this->redirect('nouveauCompte');
+        }
+
+    }
+
 
     /**
      * lien pour crediter un compte
@@ -113,6 +135,12 @@ class CompteController extends CompteService
         $post_montant = $request->request->get('montant');
         $post_num_compte_receveur = $request->request->get('num_compte_receveur');
         $compteReceveur_array = $this->getRepo()->findBy(['numero' => $post_num_compte_receveur]);
+        // dd($compteReceveur_array);
+        if (empty($compteReceveur_array)) {
+            
+            $this->addFlash('erreur',"Numéro de compte introuvable !");
+            return $this->redirect("transfererArgent");
+        }
 
         foreach ($compteReceveur_array as $key => $value) {
 
