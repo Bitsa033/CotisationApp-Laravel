@@ -30,9 +30,7 @@ class CompteController extends CompteService
      */
     function nouveauCompte(): Response
     {
-        return $this->render("compte/nouveauCompte.html.twig", [
-            'comptes' => $this->getRepo()->findAll()
-        ]);
+        return $this->render("compte/nouveauCompte.html.twig", []);
     }
 
     /**
@@ -45,7 +43,7 @@ class CompteController extends CompteService
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
 
         return $this->render("compte/crediterCompte.html.twig", [
-            'comptes' => $this->getRepo()->findAll()
+            
         ]);
     }
 
@@ -57,8 +55,9 @@ class CompteController extends CompteService
     {
         $get_id_compte_courant = $request->query->get("id");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
+
         return $this->render("compte/debiterCompte.html.twig", [
-            'comptes' => $this->getRepo()->findAll()
+            
         ]);
     }
 
@@ -69,15 +68,8 @@ class CompteController extends CompteService
     function transfererArgent(Request $request, SessionInterface $sessionInterface): Response
     {
         $get_id_compte_courant = $request->query->get("id");
-        $post_num_compte_receveur = $request->request->get("num_compte_receveur");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
-        $sessionInterface->set("num_compte_receveur", $post_num_compte_receveur);
-        // $num_compte_receveur=$sessionInterface->get("num_compte_receveur");
-        // if (!empty($post_num_compte_receveur)) {
-        //     # code...
-        //     dd($num_compte_receveur);
-        // }
-
+    
         return $this->render("compte/transfererMontant.html.twig", []);
     }
 
@@ -92,9 +84,8 @@ class CompteController extends CompteService
         $post_montant = $request->request->get('montant');
 
         $backController->depotCompte($id_compte_courant, $post_montant);
-        return $backController->message;
-
-        // return $this->redirectToRoute("listeComptes");
+        $this->addFlash('success',"Dépot éffectué");
+        return $this->redirect("listeComptes");
     }
 
     /**
@@ -107,7 +98,8 @@ class CompteController extends CompteService
         $post_montant = $request->request->get('montant');
 
         $backController->retraitCompte($id_compte_courant, $post_montant);
-        return $backController->message;
+        $this->addFlash('success',"Retrait éffectué");
+        return $this->redirect("listeComptes");
     }
 
 
@@ -120,13 +112,17 @@ class CompteController extends CompteService
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $post_montant = $request->request->get('montant');
         $post_num_compte_receveur = $request->request->get('num_compte_receveur');
-        // if (!empty($post_num_compte_receveur)) {
-        //     # code...
-        //     dd($id_compte_courant,$post_montant,$post_num_compte_receveur);
-        // }
+        $compteReceveur_array = $this->getRepo()->findBy(['numero' => $post_num_compte_receveur]);
+
+        foreach ($compteReceveur_array as $key => $value) {
+
+            $id_compte_rec = $value->getId();
+            $this->virerMontant($id_compte_courant, $post_montant, $id_compte_rec);
+        }
+
+        $this->addFlash('success',"Transfert éffectué");
+        return $this->redirect("listeComptes");
 
 
-        $backController->virer($id_compte_courant,$post_montant,$post_num_compte_receveur);
-        // return $backController->numCompteRec;
     }
 }

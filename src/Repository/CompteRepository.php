@@ -61,19 +61,7 @@ class CompteRepository extends ServiceEntityRepository
 
     public function getIdByNumero($numero)
     {
-        $conn = $this->_em->getConnection();
-        $sql = '
-            select id from compte where numero= :numero
-        ';
-        $stmt = $conn->prepare($sql);
-        $stmt->executeQuery([
-            'numero'=>$numero
-        ]);
-
-        //$resultat=$stmt->fetchAll();
-
-        // returns an array of arrays (i.e. a raw data set)
-        //return $resultat;
+        
         
     }
 

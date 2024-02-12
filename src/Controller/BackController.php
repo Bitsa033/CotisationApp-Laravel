@@ -2,15 +2,14 @@
 
 namespace App\Controller;
 
-use App\Repository\CompteRepository;
 use App\Services\CompteService;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BackController extends CompteService
 {
-    public $message;
-    public $numCompteRec;
     /**
      * lien pour afficher tous les comptes
      * @Route("/", name="comptes")
@@ -34,7 +33,7 @@ class BackController extends CompteService
 
             if (!$id_compte_db) {
 
-                return $this->message = $this->json([
+                return $this->json([
                     'message'=>'Erreur, Ce compte n\'existe pas dans notre base de données ! ',
                     'icon'=>'error',
                 ]);
@@ -44,7 +43,7 @@ class BackController extends CompteService
 
                 $this->crediter($id_compte_db,$montant);
                 
-                return $this->message = $this->json([
+                return $this->json([
                     'message'=>'Ok, Dépot effectué avec success',
                     'icon'=>'success',
                 ]);
@@ -55,7 +54,7 @@ class BackController extends CompteService
         }
         else {
 
-            return $this->message = $this->json([
+            return $this->json([
                 'message'=>'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
                 'icon'=>'error'
             ]);
@@ -77,7 +76,7 @@ class BackController extends CompteService
 
             if (!$id_compte_db) {
 
-                return $this->message = $this->json([
+                return $this->json([
                     'message'=>'Erreur, Ce compte n\'existe pas dans notre base de données ! ',
                     'icon'=>'error',
                 ]);
@@ -85,7 +84,7 @@ class BackController extends CompteService
 
             elseif ($solde_courant<$montant) {
 
-                return $this->message = $this->json([
+                return $this->json([
                     'message'=>'Erreur, Votre solde est insuffisant, veuillez recharger votre compte et recommencez ! ',
                     'icon'=>'error',
                 ]);
@@ -94,7 +93,7 @@ class BackController extends CompteService
             else {
                 $this->debiter($id_compte_db,$montant);
                 
-                return $this->message = $this->json([
+                return $this->json([
                     'message'=>'Ok, Retrait effectué avec success',
                     'icon'=>'success',
                 ]);
@@ -103,7 +102,7 @@ class BackController extends CompteService
 
         }
         else {
-            return $this->message = $this->json([
+            return $this->json([
                 'message'=>'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
                 'icon'=>'error'
             ]);
@@ -111,27 +110,27 @@ class BackController extends CompteService
     }
 
     /**
-     * lien pour transferer de l'argent d'un compte à au autre
+     * lien pour transferer de l'argent d'un compte à un autre
      * @Route("virerMontant", name="virerMontant")
      */
-    function virer($num_compteDebiteur,$montant,$num_compteReceveur)
+    function virerArgent(Request $request, BackController $backController, SessionInterface $sessionInterface)
     {
-        $repo=CompteRepository::class;
-        // $id_post_deb=$request->request->get('id_post_deb');
-        // $compteDeb=$this->getRepo()->find($id_post_deb);
-        // $solde_courant=$compteDeb->getSolde();
-        // $id_compteDebiteur_db=$this->getRepo()->find($id_compteDebiteur);
-        // $this->numCompteRec=$id_compteReceveur_db;
-        $this->numCompteRec=$num_compteReceveur;
-        if (!empty($this->numCompteRec)) {
-            $id_compteReceveur_db=$this->repo->getIdByNumero("2242");
-            # code...
-            dd($this->numCompteRec);
-        }
-        // return $this->message = $this->json([
-        //     'message'=>'Ok, Transfert effectué avec success',
-        //     'icon'=>'success',
-        // ]);
-    }
+        $id_compte_courant = $sessionInterface->get("id_compte_courant");
+        $post_montant = $request->request->get('montant');
+        $post_num_compte_receveur = $request->request->get('num_compte_receveur');
+        $compteReceveur_array = $this->getRepo()->findBy(['numero' => $post_num_compte_receveur]);
 
+        foreach ($compteReceveur_array as $key => $value) {
+
+            $id_compte_rec = $value->getId();
+            $this->virerMontant($id_compte_courant, $post_montant, $id_compte_rec);
+        }
+
+        return $this->json([
+            'message'=>'Ok, Transfert effectué avec success',
+            'icon'=>'success',
+        ]);
+
+    }
+    
 }
