@@ -112,20 +112,20 @@ class BackController extends CompteService
      * lien pour transferer de l'argent d'un compte à au autre
      * @Route("virerMontant", name="virerMontant")
      */
-    function virer($id_compteDebiteur,$montant,$id_compteCrediteur)
+    function virer($id_compteDebiteur,$montant,$id_compteReceveur)
     {
         // $id_post_deb=$request->request->get('id_post_deb');
         // $compteDeb=$this->getRepo()->find($id_post_deb);
         // $solde_courant=$compteDeb->getSolde();
-        $id_compteDebiteur_db=$this->getRepo()->find($id_compteDebiteur);
-        $id_compteCrediteur_db=$this->getRepo()->findOneBy(['numero'=>$id_compteCrediteur]);
-        // dd($compteCred);
-        return $this->message = $this->json([
-            'id_compte_deb_db'=>$id_compteDebiteur_db,
-            'id_compte_cred_db'=>$id_compteCrediteur_db,
-            'montant'=>$montant,
-            'icon'=>'success'
-        ]);
+        // $id_compteDebiteur_db=$this->getRepo()->find($id_compteDebiteur);
+        // $id_compteCrediteur_db=$this->getRepo()->findBy(['numero'=>$id_compteReceveur]);
+        dd($id_compteReceveur);
+        // return $this->message = $this->json([
+        //     // 'id_compte_deb_db'=>$id_compteDebiteur_db,
+        //     'id_compte_cred_db'=>$id_compteReceveur,
+        //     'montant'=>$montant,
+        //     'icon'=>'success'
+        // ]);
     }
 
 }
