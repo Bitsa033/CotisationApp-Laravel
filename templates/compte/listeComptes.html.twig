@@ -5,6 +5,7 @@
     <div class="col-md-8 offset-1">
         <br>
         <a class=" btn btn-primary" href="{{path('crediterCompte')}}">Nouveau Compte</a>
+        <br><br>
         <table class="table">
             <tr>
                 <th>Compte n°</th>
@@ -17,7 +18,7 @@
                 <td>{{row.numero}}</td>
                 <td>{{row.solde}} FCFA</td>
                 <td>{{row.client.nom}}</td>
-                <td>
+                <td style="width: 525px;">
                     <a class=" btn btn-warning" href="{{path('crediterCompte',{id:row.id})}}">Créditer le compte</a>
                     <a class=" btn btn-info" href="{{path('debiterCompte',{id:row.id})}}">Débiter le compte</a>
                     <a class=" btn btn-dark" href="{{path('transfererArgent',{id:row.id})}}">Transférer de l'argent</a>
