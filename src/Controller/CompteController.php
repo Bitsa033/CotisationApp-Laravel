@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Services\ClientService;
 use App\Services\CompteService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -26,7 +25,7 @@ class CompteController extends CompteService
     }
 
     /**
-     * lien pour afficher tous les comptes
+     * lien pour créer un nouveau uncompte
      * @Route("nouveauCompte", name="nouveauCompte")
      */
     function nouveauCompte(): Response
@@ -75,7 +74,7 @@ class CompteController extends CompteService
     }
 
     /**
-     * lien pour enregistrer un client et son compte
+     * lien pour enregistrer un nouveau compte
      * @Route("nouveauCompteB", name="nouveauCompteB")
      */
     public function nouveauCompteB(Request $request,ClientService $service)
@@ -111,7 +110,7 @@ class CompteController extends CompteService
     }
 
     /**
-     * lien pour crediter un compte
+     * lien pour débiter un compte
      * @Route("debiterCompteB", name="debiterCompteB")
      */
     function debiterCompteB(Request $request, BackController $backController, SessionInterface $sessionInterface)
@@ -126,27 +125,12 @@ class CompteController extends CompteService
 
 
     /**
-     * lien pour crediter un compte
+     * lien pour transferer de l'argent d 'un compte à un autre
      * @Route("transfererArgentB", name="transfererArgentB")
      */
     function transfererArgentB(Request $request, BackController $backController, Session $sessionInterface)
     {
-        $id_compte_courant = $sessionInterface->get("id_compte_courant");
-        $post_montant = $request->request->get('montant');
-        $post_num_compte_receveur = $request->request->get('num_compte_receveur');
-        $compteReceveur_array = $this->getRepo()->findBy(['numero' => $post_num_compte_receveur]);
-        // dd($compteReceveur_array);
-        if (empty($compteReceveur_array)) {
-            
-            $this->addFlash('erreur',"Numéro de compte introuvable !");
-            return $this->redirect("transfererArgent");
-        }
-
-        foreach ($compteReceveur_array as $key => $value) {
-
-            $id_compte_rec = $value->getId();
-            $this->virerMontant($id_compte_courant, $post_montant, $id_compte_rec);
-        }
+        $backController->virerArgent($request,$sessionInterface);
 
         $this->addFlash('success',"Transfert éffectué");
         return $this->redirect("listeComptes");

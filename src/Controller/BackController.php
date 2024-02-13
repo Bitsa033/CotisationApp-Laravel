@@ -16,9 +16,7 @@ class BackController extends CompteService
      */
     public function listeComptes(): Response
     {
-        return $this->render('back/index.html.twig', [
-            'comptes' => $this->getRepo()->findAll()
-        ]);
+        return $this->json(['data'=>$this->getRepo()->findAll()]);
     }
 
     /**
@@ -113,7 +111,7 @@ class BackController extends CompteService
      * lien pour transferer de l'argent d'un compte à un autre
      * @Route("virerMontant", name="virerMontant")
      */
-    function virerArgent(Request $request, BackController $backController, SessionInterface $sessionInterface)
+    function virerArgent(Request $request, SessionInterface $sessionInterface)
     {
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $post_montant = $request->request->get('montant');
