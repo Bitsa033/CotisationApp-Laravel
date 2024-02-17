@@ -17,7 +17,7 @@ class ClientController extends AbstractController
     public function findAllData(ClientService $service): Response
     {
         // dd($d=$clients->readOneData(8));
-        return $this->render('compte/listeComptes.html.twig', [
+        return $this->render('client/index.html.twig', [
             'comptes'=>$service->findAllData()
         ]);
     }
@@ -37,11 +37,6 @@ class ClientController extends AbstractController
             //     'message'=>'Ok, Données enrgistrées avec success',
             //     'icon'=>'success',
             // ]);
-
-            return $this->render('client/index.html.twig', [
-                'clients'=>$service->findAllData()
-            ]);
-              
         }
         else {
             return $this->json([

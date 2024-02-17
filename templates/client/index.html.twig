@@ -1,53 +1,40 @@
 {% extends "base.html.twig" %}
 {% block body %}
-	<div class="container offset-1">
-		<h1>
-			<p style="color:aqua; display:inline-block ">Liste des </p>
-			<p style="display:inline-block; color:chartreuse; ">Clients</p> 
-		</h1>
-		<div class="row">
-			<div class="col-md-6">
-				
-    		<!-- Modal -->
-				{# <button class="btn btn-primary" data-toggle="modal" data-target="#client">Nouveau client <i class="ti-plus"></i></button> #}
-				<a class="nav-link" href="{{path('deleteClient')}}" id="remove"><i class="fa fa-times"></i> Supprimer tous les clients <span
-					class="sr-only">(current)</span></a>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Nom</th>
-							<th>Contact</th>
-						</tr>
-					</thead>
-					
-					<tbody>
-						{% for client in clients %}
-							<tr>
-								<td>{{client.id}}</td>
-								<td>{{client.nom}}</td>
-								<td>{{client.contact}}</td>
-								{# <td>
-									{# <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button> #}
-									{# <a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
-									<a class="btn_update_client btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
-									<a class="removeOne btn btn-danger" href="{{path('deleteOneClient',{id:client.id})}}"></i> Supprimer</a>
-								</td> #}
-							</tr>
 
-						{% else %}
-							<tr>
-								<td colspan="3" class="text-center">{{'Tableau vide ...'}}</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-			{# end col #}
-		</div>
-		{# end row #}
+<div class="row">
+    <div class="col-md-8 offset-1">
+        <br>
+        <a class=" btn btn-primary" href="{{path('nouveauCompte')}}">Nouveau Compte</a>
+        <br><br>
+        <table class="table">
+            <tr>
+                <th>Compte n°</th>
+                <th>Nom</th>
+                <th>Contact</th>
+                <th>Adresse</th>
+                <th>Actions</th>
+            </tr>
+            {% for row in comptes %}
+            <tr>
+                <td>{{row.id}}</td>
+                <td>{{row.membre.nom}}</td>
+                <td>{{row.membre.contact}}</td>
+                <td>{{row.membre.adresse}}</td>
+                <td style="width: 525px;">
+                    <a class=" btn btn-warning" href="{{path('crediterCompte',{id:row.id})}}">Créditer le compte</a>
+                    <a class=" btn btn-info" href="{{path('debiterCompte',{id:row.id})}}">Débiter le compte</a>
+                    <a class=" btn btn-dark" href="{{path('transfererArgent',{id:row.id})}}">Transférer de l'argent</a>
+                </td>
+            </tr>
+                
+            {% else %}
+            <tr>
+                <td colspan="3">La lite est vide ...</td>
+            </tr> 
+            {% endfor %}
+        </table>
+    </div>
+</div>
 
-	</div>
-	<br>
-	
-{% endblock %}
+
+{% endblock body %}

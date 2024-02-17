@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+<div class="row">
+    <div class="col-md-8 offset-1">
+        <br>
+        <a class=" btn btn-primary" href="{{path('nouvelleCaisse')}}">Nouvelle Caisse</a>
+        <br><br>
+        <table class="table">
+            <tr>
+                <th>Caisse n°</th>
+                <th>Nom</th>
+                <th>Code</th>
+                <th>Actions</th>
+            </tr>
+            {% for row in caisses %}
+            <tr>
+                <td>{{row.id}}</td>
+                <td>{{row.nom}}</td>
+                <td>{{row.code}}</td>
+                <td style="width: 525px;">
+                    <a class=" btn btn-warning" href="{{path('crediterCompte',{id:row.id})}}">Consulter</a>
+                    {# <a class=" btn btn-info" href="{{path('debiterCompte',{id:row.id})}}">Débiter le compte</a>
+                    <a class=" btn btn-dark" href="{{path('transfererArgent',{id:row.id})}}">Transférer de l'argent</a> #}
+                </td>
+            </tr>
+                
+            {% else %}
+            <tr>
+                <td colspan="3">La lite est vide ...</td>
+            </tr> 
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+{% endblock body %}

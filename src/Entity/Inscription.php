@@ -25,7 +25,7 @@ class Inscription
     private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=membre::class, inversedBy="inscriptions")
+     * @ORM\ManyToOne(targetEntity=membre::class, inversedBy="inscriptions",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $membre;

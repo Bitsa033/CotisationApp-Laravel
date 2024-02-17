@@ -17,13 +17,22 @@ class CompteController extends CompteService
 
     /**
      * lien pour afficher tous les comptes
-     * @Route("toto", name="toto")
+     * @Route("caisses", name="caisses")
      */
-    function listeComptes(): Response
+    function listeCaisses(DataBaseService $dataBaseService): Response
     {
-        return $this->render("compte/listeComptes.html.twig", [
-            // 'comptes' => $this->caisseRepository->findAll()
+        return $this->render("compte/listeCaisses.html.twig", [
+            'caisses' => $dataBaseService->caisseRepository->findAll()
         ]);
+    }
+
+    /**
+     * lien pour créer une nouvelle caisse
+     * @Route("nouvelleCaisse", name="nouvelleCaisse")
+     */
+    function nouvelleCaisse(): Response
+    {
+        return $this->render("compte/nouvelleCaisse.html.twig", []);
     }
 
     /**
@@ -39,13 +48,13 @@ class CompteController extends CompteService
      * lien pour crediter un compte
      * @Route("crediterCompte", name="crediterCompte")
      */
-    function crediterCompte(Request $request, SessionInterface $sessionInterface): Response
+    function crediterCompte(Request $request, DataBaseService $dataBaseService, SessionInterface $sessionInterface): Response
     {
         $get_id_compte_courant = $request->query->get("id");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
 
         return $this->render("compte/crediterCompte.html.twig", [
-            
+            'caisses'=>$dataBaseService->caisseRepository->findAll()
         ]);
     }
 
@@ -82,11 +91,36 @@ class CompteController extends CompteService
     public function nouveauCompteB(Request $request,ClientService $service)
     {
         $nom=$request->request->get('nom');
+        $adresse=$request->request->get('adresse');
         $contact=$request->request->get('contact');
         if (!empty($nom) && !empty($contact)) {
-        //    $service->createData(compact("nom","contact"));
+           $service->createData($nom,$contact,$adresse);
            $this->addFlash('success','Création du compte réussi !');
-            return $this->redirect('membres');
+            return $this->redirectToRoute('membres');
+              
+        }
+        else {
+            $this->addFlash('erreur','Remplissez votre formulaire !');
+            return $this->redirect('nouveauCompte');
+        }
+
+    }
+
+    /**
+     * lien pour enregistrer un nouveau compte
+     * @Route("nouvelleCaisseB", name="nouvelleCaisseB")
+     */
+    public function nouvelleCaisseB(Request $request,DataBaseService $service)
+    {
+        $nom=$request->request->get('nom');
+        $code=$request->request->get('code');
+        if (!empty($nom) && !empty($code)) {
+           $caisse=$service->caisseTable;
+           $caisse->setNom($nom);
+           $caisse->setCode($code);
+           $service->save($caisse);
+           $this->addFlash('success','Caisse crée avec succès !');
+            return $this->redirectToRoute('caisses');
               
         }
         else {
