@@ -138,11 +138,11 @@ class CompteController extends CompteService
     function crediterCompteB(Request $request, BackController $backController, SessionInterface $sessionInterface)
     {
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
-        $post_montant = $request->request->get('montant');
-
+        // $post_montant = $request->request->get('montant');
+        dd($request);
         // $backController->depotCompte($id_compte_courant, $post_montant);
-        $this->addFlash('success',"Dépot éffectué");
-        return $this->redirect("membres");
+        // $this->addFlash('success',"Dépot éffectué");
+        // return $this->redirect("membres");
     }
 
     /**
