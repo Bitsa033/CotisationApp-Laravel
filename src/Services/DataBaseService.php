@@ -2,74 +2,72 @@
 
 namespace App\Services;
 
+use App\Entity\Caisse;
+use App\Entity\Cotisation;
+use App\Entity\Inscription;
+use App\Entity\Membre;
+use App\Repository\CaisseRepository;
+use App\Repository\CotisationRepository;
+use App\Repository\InscriptionRepository;
+use App\Repository\MembreRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DataBaseService extends AbstractController
 {
 
-    protected $table;
-    protected $repo;
+    protected $membreRepository;
+    protected $inscriptionRepository;
+    protected $caisseRepository;
+    protected $cotisationRepository;
+
+    protected $membreTable;
+    protected $inscriptionTable;
+    protected $caisseTable;
+    protected $cotisationTable;
     protected $db;
 
-    /**
-     * Cette méthode retourne le gestionnaire de connexion
-     * à la base de données
-     */
-    public function getConnect()
-    {
-        return $this->db = $this->getDoctrine()->getManager();
+    function __construct(MembreRepository $membreRepository, InscriptionRepository $inscriptionRepository,
+    CaisseRepository $caisseRepository, CotisationRepository $cotisationRepository, ManagerRegistry $managerRegistry) {
+
+        $this->membreRepository = $membreRepository;
+        $this->inscriptionRepository = $inscriptionRepository;
+        $this->caisseRepository = $caisseRepository;
+        $this->cotisationRepository = $cotisationRepository;
+
+        $this->membreTable = new Membre();
+        $this->inscriptionTable = new Inscription();
+        $this->caisseTable = new Caisse();
+        $this->cotisationTable = new Cotisation();
+
+        $this->db=$managerRegistry->getManager();
     }
 
     /**
-     * Cette méthode retourne le repository de la table courante
-     */
-    public function getRepo()
-    {
-        return $this->getDoctrine()->getRepository($this->table);
-    }
-
-    /**
-     * Cette méthode persiste les données dans la table courante
-     * @param $object
+     * Cette méthode insert les données dans la base de données
      * @return void
      */
-    public function save($object)
+    public function write()
     {
-        $this->db = $this->getConnect();
-        $this->db->persist($object);
         $this->db->flush();
     }
 
     /**
-     * Cette méthode modifie les données de la table courante par son id
-     * @param $object
+     * Cette méthode prépare et insert les données de la table courante
      * @return void
      */
-    public function update()
+    public function save($object)
     {
-        $this->getConnect()->flush();
+        $this->db->persist($object);
+        $this->write();
     }
 
     /**
-     * Cette méthode affiche tous les enregistrements de la table courante
-     * @return array
-     */
-    public function getAll(): array
-    {
-        $repo = $this->repo = $this->getRepo();
-        $fetchAll = $repo->findAll();
-
-        return $fetchAll;
-    }
-
-    /**
-     * Cette méthode affiche l'id de la table courante
-     * @param integer $id
+     * Cette méthode affiche un enregistrement par son ID de la table courante
      * @return void
      */
-    public function getId($id)
+    public function find($repo,$id)
     {
-        $repo = $this->getRepo();
         $fetchId = $repo->find($id);
         return $fetchId;
     }
@@ -78,28 +76,21 @@ class DataBaseService extends AbstractController
      * Cette méthode supprime tous les enregistrements de la table courante
      * @return void
      */
-    public function deleteAll()
+    public function deleteAll($repo)
     {
-        $this->db = $this->getConnect();
-        $this->repo = $this->getRepo();
-        $alldata = $this->repo->findAll();
+        $alldata = $repo->findAll();
         foreach ($alldata as $key => $value) {
             $this->db->remove($value);
-            //$this->db->flush();
         }
     }
 
     /**
      * Cette méthode supprime un seul enregistrement de la table courante
-     * par son id
-     * @param int $id
      * @return void
      */
-    public function deleteOne(int $id): void
+    public function deleteOne($repo,$id): void
     {
-        $this->db = $this->getConnect();
-        $fid = $this->getId($id);
-        $this->db->remove($fid);
-        //$this->db->flush();
+        $id_table = $this->find($repo,$id);
+        $this->db->remove($id_table);
     }
 }

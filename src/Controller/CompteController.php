@@ -20,7 +20,7 @@ class CompteController extends CompteService
     function listeComptes(): Response
     {
         return $this->render("compte/listeComptes.html.twig", [
-            'comptes' => $this->getRepo()->findAll()
+            'comptes' => $this->caisseRepository->findAll()
         ]);
     }
 

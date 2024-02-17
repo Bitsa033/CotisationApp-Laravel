@@ -12,11 +12,11 @@ class BackController extends CompteService
 {
     /**
      * lien pour afficher tous les comptes
-     * @Route("/", name="comptes")
+     * @Route("/comptes", name="comptes")
      */
     public function listeComptes(): Response
     {
-        return $this->json(['data'=>$this->getRepo()->findAll()]);
+        return $this->json(['data'=>$this->caisseRepository->findAll()]);
     }
 
     /**
@@ -27,7 +27,7 @@ class BackController extends CompteService
     {
         if (!empty($id_compte) && !empty($montant)) { 
 
-            $id_compte_db=$this->getId($id_compte);
+            $id_compte_db=$this->caisseRepository->find($id_compte);
 
             if (!$id_compte_db) {
 
@@ -69,8 +69,8 @@ class BackController extends CompteService
         //dd($solde_courant);
         if (!empty($id_compte) && !empty($montant)) { 
 
-            $id_compte_db=$this->getRepo()->find($id_compte);
-            $solde_courant=$id_compte_db->getSolde();
+            $id_compte_db=$this->cotisationRepository->find($id_compte);
+            $solde_courant=$id_compte_db->getMontant();
 
             if (!$id_compte_db) {
 
@@ -116,7 +116,7 @@ class BackController extends CompteService
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $post_montant = $request->request->get('montant');
         $post_num_compte_receveur = $request->request->get('num_compte_receveur');
-        $compteReceveur_array = $this->getRepo()->findBy(['numero' => $post_num_compte_receveur]);
+        $compteReceveur_array = $this->caisseRepository->findBy(['id' => $post_num_compte_receveur]);
 
         foreach ($compteReceveur_array as $key => $value) {
 

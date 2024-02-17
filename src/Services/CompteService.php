@@ -8,35 +8,31 @@ use App\Repository\CompteRepository;
 class CompteService  extends DataBaseService implements CompteInterface
 {
   
-  public function __construct()
-  {
-    $this->table=Compte::class;
-  }
-
   public function creer()
   {
   }
 
   function debiter($numeroCompte, $montant)
   {
-    $c= $this->getRepo()->find($numeroCompte);
-    $solde_courant=$c->getSolde();
+    $c= $this->cotisationRepository->find($numeroCompte);
+    $solde_courant=$c->getMontant();
     $solde_actuel=$solde_courant-$montant;
-    $c->setSolde($solde_actuel);
+    $c->setMontant($solde_actuel);
     $this->save($c);
   }
 
   public function crediter($numeroCompte, $montant)
   {
-    $c= $this->getRepo()->find($numeroCompte);
-    $solde_courant=$c->getSolde();
+    $c= $this->cotisationRepository->find($numeroCompte);
+    $solde_courant=$c->getMontant();
     $solde_actuel=$solde_courant+$montant;
-    $c->setSolde($solde_actuel);
+    $c->setMontant($solde_actuel);
     $this->save($c);
   }
 
   public function consulter($numeroCompte)
   {
+    return $this->cotisationRepository->find($numeroCompte);
   }
 
   public function virerMontant($numeroCompteDebiteur, $montant, $numeroCompteCrediteur)

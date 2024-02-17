@@ -2,16 +2,8 @@
 
 namespace App\Services;
 
-use App\Entity\Client;
-use App\Entity\Compte;
-
 class ClientService extends DataBaseService implements ClientInterface
 {
-
-  public function __construct()
-  {
-    $this->table = Client::class;
-  }
 
   /**
    * Cette méthode construit les données des tables [Client et Compte] et les 
@@ -21,15 +13,14 @@ class ClientService extends DataBaseService implements ClientInterface
    */
   public function createData(array $data)
   {
-    $table = new $this->table;
+    $table = $this->membreTable;
     $table->setNom($data["nom"]);
+    $table->setAdresse($data["adresse"]);
     $table->setContact($data["contact"]);
 
-    $c = new Compte();
-    $c->setNumero(rand(100, 9000));
-    $c->setSolde(0);
-    $c->setDateT(new \dateTime());
-    $c->setClient($table);
+    $c = $this->inscriptionTable;
+    $c->setMembre($table);
+    $c->setCreatedAt(new \dateTime());
     $this->save($c);
   }
 
@@ -37,16 +28,17 @@ class ClientService extends DataBaseService implements ClientInterface
   {
     $data['client']->setNom($data["nom"]);
     $data['client']->setContact($data["contact"]);
-    $this->update();
+    $this->write();
   }
 
-  public function findAllData($id)
+  public function findAllData()
   {
-    
+    return $this->inscriptionRepository->findAll();
   }
 
   public function deleteOneData($id)
   {
-    
+    $data= $this->inscriptionRepository->find($id);
+    $this->db->remove($data);
   }
 }

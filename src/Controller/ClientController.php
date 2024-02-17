@@ -10,14 +10,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClientController extends DataBaseService
 {
     /**
-     * lien qui affiche la liste des clients
-     * @Route("clients", name="clients")
+     * lien qui affiche la liste des membres
+     * @Route("/", name="membres")
      */
     public function findAllData(ClientService $service): Response
     {
         // dd($d=$clients->readOneData(8));
         return $this->render('client/index.html.twig', [
-            'clients'=>$service->getRepo()->findAll()
+            'clients'=>$service->findAllData()
         ]);
     }
 
@@ -31,9 +31,14 @@ class ClientController extends DataBaseService
         $contact=$request->request->get('contact');
         if (!empty($nom) && !empty($contact)) {
            $service->createData(compact("nom","contact"));
-            return $this->json([
-                'message'=>'Ok, Données enrgistrées avec success',
-                'icon'=>'success',
+           $this->addFlash('success','Donnée enregistrée avec succès');
+            // return $this->json([
+            //     'message'=>'Ok, Données enrgistrées avec success',
+            //     'icon'=>'success',
+            // ]);
+
+            return $this->render('client/index.html.twig', [
+                'clients'=>$service->findAllData()
             ]);
               
         }
@@ -52,20 +57,19 @@ class ClientController extends DataBaseService
      */
     function findOneData(ClientService $service,$id)
     {
-        $client=$service->getRepo()->find($id);
-        $id_client=$client->getId();
-        $nom=$client->getNom();
-        $contact=$client->getContact();
-        $solde_du_compte=$client->getCompte()->getSolde();
-        $compte_id=$client->getCompte()->getId();
-        $numero_de_compte=$client->getCompte()->getNumero();
+        $id_client=$this->inscriptionRepository->getId();
+        $nom=$id_client->getNom();
+        $contact=$id_client->getContact();
+        // $solde_du_compte=$client->getCompte()->getSolde();
+        // $compte_id=$client->getCompte()->getId();
+        // $numero_de_compte=$client->getCompte()->getNumero();
         return $this->json([
             'id'=>$id_client,
             'nom'=>$nom,
             'contact'=>$contact,
-            'solde_du_compte'=>$solde_du_compte,
-            'compte_id'=>$compte_id,
-            'numero_de_compte'=>$numero_de_compte,
+            // 'solde_du_compte'=>$solde_du_compte,
+            // 'compte_id'=>$compte_id,
+            // 'numero_de_compte'=>$numero_de_compte,
             'icon'=>'success'
         ]);
         
@@ -82,7 +86,7 @@ class ClientController extends DataBaseService
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($id) && !empty($nom) && !empty($contact)) { 
-            $client=$service->getId($id);
+            $client=$service->inscriptionRepository->find($id);
             if (!$client) {
                 return $this->json([
                     'message'=>'Erreur, Ce client n\'existe pas dans notre base de données ! ',
@@ -92,10 +96,11 @@ class ClientController extends DataBaseService
             else {
                 $create=$service->updateData(compact("client","nom","contact"));
                 
-                return $this->json([
-                    'message'=>'Ok, Données modifiées avec success',
-                    'icon'=>'success',
-                ]);
+                // return $this->json([
+                //     'message'=>'Ok, Données modifiées avec success',
+                //     'icon'=>'success',
+                // ]);
+                return $this->redirect('membres');
                 
             }
 
@@ -114,12 +119,14 @@ class ClientController extends DataBaseService
      */
     public function deleteAllData(ClientService $service)
     {
-        $service->deleteAll();
+        $service->deleteAll($this->inscriptionRepository);
         
-        return $this->json([
-            'message'=>'Ok, liste des données supprimée avec succès !',
-            'icon'=>'success'
-        ]);
+        // return $this->json([
+        //     'message'=>'Ok, liste des données supprimée avec succès !',
+        //     'icon'=>'success'
+        // ]);
+
+        return $this->redirect('membres');
 
     }
 
@@ -132,10 +139,11 @@ class ClientController extends DataBaseService
         if (!empty($id)) {
             $service->deleteOneData($id);
             
-            return $this->json([
-                'message'=>'Ok, le client a été supprimé !',
-                'icon'=>'success'
-            ]);
+            // return $this->json([
+            //     'message'=>'Ok, le client a été supprimé !',
+            //     'icon'=>'success'
+            // ]);
+            return $this->redirect('membres');
 
         }
         else {
