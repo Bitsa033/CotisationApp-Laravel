@@ -3,11 +3,12 @@
 namespace App\Controller;
 use App\Services\ClientService;
 use App\Services\DataBaseService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ClientController extends DataBaseService
+class ClientController extends AbstractController
 {
     /**
      * lien qui affiche la liste des membres
@@ -16,8 +17,8 @@ class ClientController extends DataBaseService
     public function findAllData(ClientService $service): Response
     {
         // dd($d=$clients->readOneData(8));
-        return $this->render('client/index.html.twig', [
-            'clients'=>$service->findAllData()
+        return $this->render('compte/listeComptes.html.twig', [
+            'comptes'=>$service->findAllData()
         ]);
     }
 
@@ -30,7 +31,7 @@ class ClientController extends DataBaseService
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($nom) && !empty($contact)) {
-           $service->createData(compact("nom","contact"));
+        //    $service->createData(compact("nom","contact"));
            $this->addFlash('success','Donnée enregistrée avec succès');
             // return $this->json([
             //     'message'=>'Ok, Données enrgistrées avec success',
@@ -57,7 +58,7 @@ class ClientController extends DataBaseService
      */
     function findOneData(ClientService $service,$id)
     {
-        $id_client=$this->inscriptionRepository->getId();
+        $id_client=$service->findAOneData($id);
         $nom=$id_client->getNom();
         $contact=$id_client->getContact();
         // $solde_du_compte=$client->getCompte()->getSolde();
@@ -86,7 +87,7 @@ class ClientController extends DataBaseService
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($id) && !empty($nom) && !empty($contact)) { 
-            $client=$service->inscriptionRepository->find($id);
+            $client=$service->findAOneData($id);
             if (!$client) {
                 return $this->json([
                     'message'=>'Erreur, Ce client n\'existe pas dans notre base de données ! ',
@@ -117,9 +118,9 @@ class ClientController extends DataBaseService
      * lien pour supprimer tous les clients
      * @Route("deleteClient", name="deleteClient")
      */
-    public function deleteAllData(ClientService $service)
+    public function deleteAllData(DataBaseService $service)
     {
-        $service->deleteAll($this->inscriptionRepository);
+        $service->deleteAll($service->inscriptionRepository);
         
         // return $this->json([
         //     'message'=>'Ok, liste des données supprimée avec succès !',

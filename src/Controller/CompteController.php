@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Services\ClientService;
 use App\Services\CompteService;
+use App\Services\DataBaseService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -15,12 +17,12 @@ class CompteController extends CompteService
 
     /**
      * lien pour afficher tous les comptes
-     * @Route("listeComptes", name="listeComptes")
+     * @Route("toto", name="toto")
      */
     function listeComptes(): Response
     {
         return $this->render("compte/listeComptes.html.twig", [
-            'comptes' => $this->caisseRepository->findAll()
+            // 'comptes' => $this->caisseRepository->findAll()
         ]);
     }
 
@@ -82,9 +84,9 @@ class CompteController extends CompteService
         $nom=$request->request->get('nom');
         $contact=$request->request->get('contact');
         if (!empty($nom) && !empty($contact)) {
-           $service->createData(compact("nom","contact"));
+        //    $service->createData(compact("nom","contact"));
            $this->addFlash('success','Création du compte réussi !');
-            return $this->redirect('listeComptes');
+            return $this->redirect('membres');
               
         }
         else {
@@ -104,23 +106,24 @@ class CompteController extends CompteService
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $post_montant = $request->request->get('montant');
 
-        $backController->depotCompte($id_compte_courant, $post_montant);
+        // $backController->depotCompte($id_compte_courant, $post_montant);
         $this->addFlash('success',"Dépot éffectué");
-        return $this->redirect("listeComptes");
+        return $this->redirect("membres");
     }
 
     /**
      * lien pour débiter un compte
      * @Route("debiterCompteB", name="debiterCompteB")
      */
-    function debiterCompteB(Request $request, BackController $backController, SessionInterface $sessionInterface)
+    function debiterCompteB(Request $request, BackController $backController, SessionInterface $sessionInterface,
+    DataBaseService $dataBaseService)
     {
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $post_montant = $request->request->get('montant');
 
-        $backController->retraitCompte($id_compte_courant, $post_montant);
+        $backController->retraitCompte($id_compte_courant, $post_montant,$dataBaseService);
         $this->addFlash('success',"Retrait éffectué");
-        return $this->redirect("listeComptes");
+        return $this->redirect("membres");
     }
 
 
@@ -128,12 +131,13 @@ class CompteController extends CompteService
      * lien pour transferer de l'argent d 'un compte à un autre
      * @Route("transfererArgentB", name="transfererArgentB")
      */
-    function transfererArgentB(Request $request, BackController $backController, Session $sessionInterface)
+    function transfererArgentB(Request $request, BackController $backController, Session $sessionInterface,
+    DataBaseService $dataBaseService)
     {
-        $backController->virerArgent($request,$sessionInterface);
+        $backController->virerArgent($request,$sessionInterface,$dataBaseService);
 
         $this->addFlash('success',"Transfert éffectué");
-        return $this->redirect("listeComptes");
+        return $this->redirect("membres");
 
 
     }

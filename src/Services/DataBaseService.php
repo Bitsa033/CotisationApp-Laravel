@@ -16,16 +16,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class DataBaseService extends AbstractController
 {
 
-    protected $membreRepository;
-    protected $inscriptionRepository;
-    protected $caisseRepository;
-    protected $cotisationRepository;
+    public $membreRepository;
+    public $inscriptionRepository;
+    public $caisseRepository;
+    public $cotisationRepository;
 
-    protected $membreTable;
-    protected $inscriptionTable;
-    protected $caisseTable;
-    protected $cotisationTable;
-    protected $db;
+    public $membreTable;
+    public $inscriptionTable;
+    public $caisseTable;
+    public $cotisationTable;
+    public $db;
 
     function __construct(MembreRepository $membreRepository, InscriptionRepository $inscriptionRepository,
     CaisseRepository $caisseRepository, CotisationRepository $cotisationRepository, ManagerRegistry $managerRegistry) {

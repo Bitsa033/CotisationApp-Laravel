@@ -4,8 +4,9 @@ namespace App\Services;
 
 use App\Entity\Compte;
 use App\Repository\CompteRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class CompteService  extends DataBaseService implements CompteInterface
+class CompteService extends AbstractController implements CompteInterface
 {
   
   public function creer()
@@ -14,25 +15,25 @@ class CompteService  extends DataBaseService implements CompteInterface
 
   function debiter($numeroCompte, $montant)
   {
-    $c= $this->cotisationRepository->find($numeroCompte);
-    $solde_courant=$c->getMontant();
-    $solde_actuel=$solde_courant-$montant;
-    $c->setMontant($solde_actuel);
-    $this->save($c);
+    // $c= $this->cotisationRepository->find($numeroCompte);
+    // $solde_courant=$c->getMontant();
+    // $solde_actuel=$solde_courant-$montant;
+    // $c->setMontant($solde_actuel);
+    // $this->save($c);
   }
 
   public function crediter($numeroCompte, $montant)
   {
-    $c= $this->cotisationRepository->find($numeroCompte);
-    $solde_courant=$c->getMontant();
-    $solde_actuel=$solde_courant+$montant;
-    $c->setMontant($solde_actuel);
-    $this->save($c);
+    // $c= $this->cotisationRepository->find($numeroCompte);
+    // $solde_courant=$c->getMontant();
+    // $solde_actuel=$solde_courant+$montant;
+    // $c->setMontant($solde_actuel);
+    // $this->save($c);
   }
 
   public function consulter($numeroCompte)
   {
-    return $this->cotisationRepository->find($numeroCompte);
+    // return $this->cotisationRepository->find($numeroCompte);
   }
 
   public function virerMontant($numeroCompteDebiteur, $montant, $numeroCompteCrediteur)
