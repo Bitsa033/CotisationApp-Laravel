@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Cotisation;
 use App\Services\ClientService;
 use App\Services\CompteService;
 use App\Services\DataBaseService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -23,6 +23,17 @@ class CompteController extends CompteService
     {
         return $this->render("compte/listeCaisses.html.twig", [
             'caisses' => $dataBaseService->caisseRepository->findAll()
+        ]);
+    }
+
+    /**
+     * lien pour afficher tous les comptes
+     * @Route("cotisations", name="cotisations")
+     */
+    function listeCotisations(DataBaseService $dataBaseService): Response
+    {
+        return $this->render("compte/listeCotisations.html.twig", [
+            'caisses' => $dataBaseService->cotisationRepository->findAll()
         ]);
     }
 
@@ -135,14 +146,27 @@ class CompteController extends CompteService
      * lien pour crediter un compte
      * @Route("crediterCompteB", name="crediterCompteB")
      */
-    function crediterCompteB(Request $request, BackController $backController, SessionInterface $sessionInterface)
+    function crediterCompteB(Request $request, DataBaseService $dataBaseService, SessionInterface $sessionInterface)
     {
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
-        // $post_montant = $request->request->get('montant');
-        dd($request);
-        // $backController->depotCompte($id_compte_courant, $post_montant);
-        // $this->addFlash('success',"Dépot éffectué");
-        // return $this->redirect("membres");
+        $membre = $dataBaseService->inscriptionRepository->find($id_compte_courant);
+        // $current_membre=$dataBaseService->cotisationRepository->findCotisations($dataBaseService);
+        
+        $size_of_form=sizeof($request->request);
+        for ($i=1; $i <=$size_of_form ; $i++) { 
+            $cotisation = new Cotisation();
+            $name_of_form=$request->request->get("montant{$i}");
+            $caisse = $dataBaseService->caisseRepository->find($i);
+            $cotisation->setInscription($membre);
+            $cotisation->setCaisse($caisse);
+            $cotisation->setMontant($name_of_form);
+            $cotisation->setCreatedAt(new \DateTime());
+            $dataBaseService->save($cotisation);
+        }
+
+        $this->addFlash('success',"Dépot éffectué");
+        return $this->redirectToRoute("membres");
+        // return new Response();
     }
 
     /**

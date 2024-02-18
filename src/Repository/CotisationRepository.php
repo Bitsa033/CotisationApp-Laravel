@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cotisation;
+use App\Services\DataBaseService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -50,19 +51,23 @@ class CotisationRepository extends ServiceEntityRepository
     // /**
     //  * @return Cotisation[] Returns an array of Cotisation objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findCotisations(DataBaseService $dataBaseService)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $conn = $dataBaseService->con_with_pdo_to_mysql();
+        $sql = '
+        SELECT membre.nom as membre, caisse.nom as caisse, cotisation.montant FROM cotisation inner join inscription ON
+        inscription.id=cotisation.inscription_id inner join membre on membre.id = 
+        inscription.membre_id inner join caisse on caisse.id= cotisation.caisse_id
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultat=$stmt->fetchAll();
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultat;
+        
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Cotisation

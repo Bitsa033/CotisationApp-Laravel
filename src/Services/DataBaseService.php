@@ -11,6 +11,7 @@ use App\Repository\CotisationRepository;
 use App\Repository\InscriptionRepository;
 use App\Repository\MembreRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DataBaseService extends AbstractController
@@ -41,6 +42,17 @@ class DataBaseService extends AbstractController
         $this->cotisationTable = new Cotisation();
 
         $this->db=$managerRegistry->getManager();
+    }
+
+    function con_with_pdo_to_mysql(){
+
+        try {
+            $pdo=new \PDO('mysql:host=localhost;dbname=cotisation','root','');
+        } catch (Exception $th) {
+            die( $th->getMessage());
+        }
+
+        return $pdo;
     }
 
     /**
