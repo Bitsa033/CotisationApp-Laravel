@@ -65,7 +65,8 @@ class CompteController extends CompteService
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
 
         return $this->render("compte/crediterCompte.html.twig", [
-            'caisses'=>$dataBaseService->caisseRepository->findAll()
+            'caisses'=>$dataBaseService->caisseRepository->findAll(),
+            'inscriptions'=>$dataBaseService->inscriptionRepository->findAll()
         ]);
     }
 
@@ -73,13 +74,13 @@ class CompteController extends CompteService
      * lien pour debiter un compte
      * @Route("debiterCompte", name="debiterCompte")
      */
-    function debiterCompte(Request $request, SessionInterface $sessionInterface): Response
+    function debiterCompte(Request $request, SessionInterface $sessionInterface, DataBaseService $dataBaseService): Response
     {
         $get_id_compte_courant = $request->query->get("id");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
 
         return $this->render("compte/debiterCompte.html.twig", [
-            
+            'inscriptions'=>$dataBaseService->inscriptionRepository->findAll()
         ]);
     }
 
@@ -87,12 +88,14 @@ class CompteController extends CompteService
      * lien pour transferer de l'argent
      * @Route("transfererArgent", name="transfererArgent")
      */
-    function transfererArgent(Request $request, SessionInterface $sessionInterface): Response
+    function transfererArgent(Request $request, SessionInterface $sessionInterface, DataBaseService $dataBaseService): Response
     {
         $get_id_compte_courant = $request->query->get("id");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
     
-        return $this->render("compte/transfererMontant.html.twig", []);
+        return $this->render("compte/transfererMontant.html.twig", [
+            'inscriptions'=>$dataBaseService->inscriptionRepository->findAll()
+        ]);
     }
 
     /**

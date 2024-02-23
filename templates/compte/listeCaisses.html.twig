@@ -18,11 +18,8 @@
                 <td>{{row.id}}</td>
                 <td>{{row.nom}}</td>
                 <td>{{row.code}}</td>
-                <td style="width: 525px;">
-                    <a class=" btn btn-warning" href="{{path('crediterCompte',{id:row.id})}}">Consulter</a>
-                    {# <a class=" btn btn-info" href="{{path('debiterCompte',{id:row.id})}}">Débiter le compte</a>
-                    <a class=" btn btn-dark" href="{{path('transfererArgent',{id:row.id})}}">Transférer de l'argent</a> #}
-                </td>
+                <td >
+                    <a class=" btn btn-info col-md-12" href="{{path('crediterCompte',{id:row.id})}}">Modifier</a>
             </tr>
                 
             {% else %}
