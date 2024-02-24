@@ -35,9 +35,15 @@ class Inscription
      */
     private $cotisations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Compte::class, mappedBy="inscription")
+     */
+    private $comptes;
+
     public function __construct()
     {
         $this->cotisations = new ArrayCollection();
+        $this->comptes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +99,36 @@ class Inscription
             // set the owning side to null (unless already changed)
             if ($cotisation->getInscription() === $this) {
                 $cotisation->setInscription(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Compte>
+     */
+    public function getComptes(): Collection
+    {
+        return $this->comptes;
+    }
+
+    public function addCompte(Compte $compte): self
+    {
+        if (!$this->comptes->contains($compte)) {
+            $this->comptes[] = $compte;
+            $compte->setInscription($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompte(Compte $compte): self
+    {
+        if ($this->comptes->removeElement($compte)) {
+            // set the owning side to null (unless already changed)
+            if ($compte->getInscription() === $this) {
+                $compte->setInscription(null);
             }
         }
 

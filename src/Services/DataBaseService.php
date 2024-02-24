@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Entity\Caisse;
+use App\Entity\Compte;
 use App\Entity\Cotisation;
 use App\Entity\Inscription;
 use App\Entity\Membre;
 use App\Repository\CaisseRepository;
+use App\Repository\CompteRepository;
 use App\Repository\CotisationRepository;
 use App\Repository\InscriptionRepository;
 use App\Repository\MembreRepository;
@@ -21,22 +23,27 @@ class DataBaseService extends AbstractController
     public $inscriptionRepository;
     public $caisseRepository;
     public $cotisationRepository;
+    public $compteRepository;
 
     public $membreTable;
     public $inscriptionTable;
     public $caisseTable;
     public $cotisationTable;
+    public $compteTable;
     public $db;
 
     function __construct(MembreRepository $membreRepository, InscriptionRepository $inscriptionRepository,
-    CaisseRepository $caisseRepository, CotisationRepository $cotisationRepository, ManagerRegistry $managerRegistry) {
+    CaisseRepository $caisseRepository, CotisationRepository $cotisationRepository, ManagerRegistry $managerRegistry
+    , CompteRepository $compteRepository) {
 
         $this->membreRepository = $membreRepository;
         $this->inscriptionRepository = $inscriptionRepository;
         $this->caisseRepository = $caisseRepository;
         $this->cotisationRepository = $cotisationRepository;
+        $this->compteRepository = $compteRepository;
 
         $this->membreTable = new Membre();
+        $this->compteTable= new Compte();
         $this->inscriptionTable = new Inscription();
         $this->caisseTable = new Caisse();
         $this->cotisationTable = new Cotisation();

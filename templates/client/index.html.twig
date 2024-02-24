@@ -8,14 +8,12 @@
         <br><br>
         <table class="table">
             <tr>
-                <th>Compte n°</th>
                 <th>Nom</th>
                 <th>Contact</th>
                 <th>Adresse</th>
             </tr>
             {% for row in comptes %}
             <tr>
-                <td>{{row.id}}</td>
                 <td>{{row.membre.nom}}</td>
                 <td>{{row.membre.contact}}</td>
                 <td>{{row.membre.adresse}}</td>

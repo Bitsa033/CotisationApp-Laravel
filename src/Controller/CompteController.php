@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Compte;
 use App\Entity\Cotisation;
 use App\Services\ClientService;
 use App\Services\CompteService;
@@ -65,8 +66,8 @@ class CompteController extends CompteService
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
 
         return $this->render("compte/crediterCompte.html.twig", [
-            'caisses'=>$dataBaseService->caisseRepository->findAll(),
-            'inscriptions'=>$dataBaseService->inscriptionRepository->findAll()
+            'caisses' => $dataBaseService->caisseRepository->findAll(),
+            'inscriptions' => $dataBaseService->inscriptionRepository->findAll()
         ]);
     }
 
@@ -80,7 +81,7 @@ class CompteController extends CompteService
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
 
         return $this->render("compte/debiterCompte.html.twig", [
-            'inscriptions'=>$dataBaseService->inscriptionRepository->findAll()
+            'inscriptions' => $dataBaseService->inscriptionRepository->findAll()
         ]);
     }
 
@@ -92,9 +93,9 @@ class CompteController extends CompteService
     {
         $get_id_compte_courant = $request->query->get("id");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
-    
+
         return $this->render("compte/transfererMontant.html.twig", [
-            'inscriptions'=>$dataBaseService->inscriptionRepository->findAll()
+            'inscriptions' => $dataBaseService->inscriptionRepository->findAll()
         ]);
     }
 
@@ -102,46 +103,47 @@ class CompteController extends CompteService
      * lien pour enregistrer un nouveau compte
      * @Route("nouveauCompteB", name="nouveauCompteB")
      */
-    public function nouveauCompteB(Request $request,ClientService $service)
+    public function nouveauCompteB(Request $request, DataBaseService $dataBaseService)
     {
-        $nom=$request->request->get('nom');
-        $adresse=$request->request->get('adresse');
-        $contact=$request->request->get('contact');
+        $nom = $request->request->get('nom');
+        $adresse = $request->request->get('adresse');
+        $contact = $request->request->get('contact');
         if (!empty($nom) && !empty($contact)) {
-           $service->createData($nom,$contact,$adresse);
-           $this->addFlash('success','Création du compte réussi !');
-            return $this->redirectToRoute('membres');
-              
-        }
-        else {
-            $this->addFlash('erreur','Remplissez votre formulaire, ne laissez aucun vide !');
+            $membre = $dataBaseService->membreTable;
+            $membre->setNom($nom);
+            $membre->setContact($contact);
+            $membre->setAdresse($adresse);
+            $inscription = $dataBaseService->inscriptionTable;
+            $inscription->setMembre($membre);
+            $inscription->setCreatedAt(new \DateTime());
+            $dataBaseService->save($inscription);
+            $this->addFlash('success', 'Caisse crée avec succès !');
+            return $this->redirect('membres');
+        } else {
+            $this->addFlash('erreur', 'Remplissez votre formulaire, ne laissez aucun vide !');
             return $this->redirect('nouveauCompte');
         }
-
     }
 
     /**
      * lien pour enregistrer un nouveau compte
      * @Route("nouvelleCaisseB", name="nouvelleCaisseB")
      */
-    public function nouvelleCaisseB(Request $request,DataBaseService $service)
+    public function nouvelleCaisseB(Request $request, DataBaseService $service)
     {
-        $nom=$request->request->get('nom');
-        $code=$request->request->get('code');
+        $nom = $request->request->get('nom');
+        $code = $request->request->get('code');
         if (!empty($nom) && !empty($code)) {
-           $caisse=$service->caisseTable;
-           $caisse->setNom($nom);
-           $caisse->setCode($code);
-           $service->save($caisse);
-           $this->addFlash('success','Caisse crée avec succès !');
+            $caisse = $service->caisseTable;
+            $caisse->setNom($nom);
+            $caisse->setCode($code);
+            $service->save($caisse);
+            $this->addFlash('success', 'Caisse crée avec succès !');
             return $this->redirectToRoute('caisses');
-              
-        }
-        else {
-            $this->addFlash('erreur','Remplissez votre formulaire, ne laissez aucun vide !');
+        } else {
+            $this->addFlash('erreur', 'Remplissez votre formulaire, ne laissez aucun vide !');
             return $this->redirect('nouveauCompte');
         }
-
     }
 
 
@@ -154,16 +156,21 @@ class CompteController extends CompteService
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $membre = $dataBaseService->inscriptionRepository->find($id_compte_courant);
         // $current_membre=$dataBaseService->cotisationRepository->findCotisations($dataBaseService);
-        
-        $size_of_form=sizeof($request->request);
-        for ($i=1; $i <=$size_of_form ; $i++) { 
-            $name_of_form=$request->request->get("montant{$i}");
+
+        $size_of_form = sizeof($request->request);
+        for ($i = 1; $i <= $size_of_form; $i++) {
+            $name_of_form = $request->request->get("montant{$i}");
             $caisse = $dataBaseService->caisseRepository->find($i);
             $cotisation = $dataBaseService->cotisationRepository->findBy([
-            'caisse'=>$caisse,
-            'inscription'=>$membre,
-            'created_at'=>new \DateTime()
+                'caisse' => $caisse,
+                'inscription' => $membre,
+                'created_at' => new \DateTime()
             ]);
+            $compte = $dataBaseService->compteRepository->findBy([
+                'caisse' => $caisse,
+                'inscription' => $membre,
+            ]);
+
             if (!$cotisation) {
                 // dd('vide');
                 $cotisation = new Cotisation();
@@ -172,20 +179,32 @@ class CompteController extends CompteService
                 $cotisation->setMontant($name_of_form);
                 $cotisation->setCreatedAt(new \DateTime());
                 $dataBaseService->save($cotisation);
+            } 
+            elseif (!$compte) {
+                $compte = new Compte();
+                $compte->setCaisse($caisse);
+                $compte->setInscription($membre);
+                $compte->setSolde($name_of_form);
             }
             else {
                 // dd($caisse_date);
                 foreach ($cotisation as $key => $value) {
-                    $cmontant_courant= $value->getMontant();
-                    $montant_actuel=$cmontant_courant + $name_of_form;
+                    $cmontant_courant = $value->getMontant();
+                    $montant_actuel = $cmontant_courant + $name_of_form;
                     $value->setMontant($montant_actuel);
                     $dataBaseService->db->flush();
                 }
-                
+
+                foreach ($compte as $key => $value) {
+                    $solde_courant=$value->getSolde();
+                    $solde_actuel=$solde_courant + $name_of_form;
+                    $value->setSolde($solde_actuel);
+                    $dataBaseService->db->flush();
+                }
             }
         }
 
-        $this->addFlash('success',"Dépot éffectué");
+        $this->addFlash('success', "Dépot éffectué");
         return $this->redirectToRoute("crediterCompte");
         // return new Response();
     }
@@ -194,14 +213,17 @@ class CompteController extends CompteService
      * lien pour débiter un compte
      * @Route("debiterCompteB", name="debiterCompteB")
      */
-    function debiterCompteB(Request $request, BackController $backController, SessionInterface $sessionInterface,
-    DataBaseService $dataBaseService)
-    {
+    function debiterCompteB(
+        Request $request,
+        BackController $backController,
+        SessionInterface $sessionInterface,
+        DataBaseService $dataBaseService
+    ) {
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $post_montant = $request->request->get('montant');
 
-        $backController->retraitCompte($id_compte_courant, $post_montant,$dataBaseService);
-        $this->addFlash('success',"Retrait éffectué");
+        $backController->retraitCompte($id_compte_courant, $post_montant, $dataBaseService);
+        $this->addFlash('success', "Retrait éffectué");
         return $this->redirect("membres");
     }
 
@@ -210,14 +232,15 @@ class CompteController extends CompteService
      * lien pour transferer de l'argent d 'un compte à un autre
      * @Route("transfererArgentB", name="transfererArgentB")
      */
-    function transfererArgentB(Request $request, BackController $backController, Session $sessionInterface,
-    DataBaseService $dataBaseService)
-    {
-        $backController->virerArgent($request,$sessionInterface,$dataBaseService);
+    function transfererArgentB(
+        Request $request,
+        BackController $backController,
+        Session $sessionInterface,
+        DataBaseService $dataBaseService
+    ) {
+        $backController->virerArgent($request, $sessionInterface, $dataBaseService);
 
-        $this->addFlash('success',"Transfert éffectué");
+        $this->addFlash('success', "Transfert éffectué");
         return $this->redirect("membres");
-
-
     }
 }
