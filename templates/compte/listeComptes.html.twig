@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+<div class="row">
+    <div class="col-md-8 offset-1">
+        <br>
+        <br><br>
+        <table class="table">
+            <tr>
+                <th>Membre</th>
+                <th>Caisse</th>
+                <th>Solde</th>
+            </tr>
+            {% for row in comptes %}
+            <tr>
+                <td>{{row.inscription.membre.nom}}</td>
+                <td>{{row.caisse.nom}}</td>
+                <td>{{row.solde}}</td>
+            </tr>
+                
+            {% else %}
+            <tr>
+                <td colspan="3">La liste est vide ...</td>
+            </tr> 
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+{% endblock body %}

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Compte;
 use App\Entity\Cotisation;
-use App\Services\ClientService;
 use App\Services\CompteService;
 use App\Services\DataBaseService;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +16,19 @@ class CompteController extends CompteService
 {
 
     /**
-     * lien pour afficher tous les comptes
+     * lien qui affiche la liste des membres
+     * @Route("/", name="membres")
+     */
+    public function listeMembres(DataBaseService $service): Response
+    {
+        // dd($d=$clients->readOneData(8));
+        return $this->render('client/index.html.twig', [
+            'comptes'=>$service->inscriptionRepository->findAll()
+        ]);
+    }
+
+    /**
+     * lien pour afficher toutes les caisses
      * @Route("caisses", name="caisses")
      */
     function listeCaisses(DataBaseService $dataBaseService): Response
@@ -28,7 +39,18 @@ class CompteController extends CompteService
     }
 
     /**
-     * lien pour afficher tous les comptes
+     * lien pour afficher toutes les caisses
+     * @Route("comptes", name="comptes")
+     */
+    function listeComptes(DataBaseService $dataBaseService): Response
+    {
+        return $this->render("compte/listeComptes.html.twig", [
+            'comptes' => $dataBaseService->compteRepository->findAll()
+        ]);
+    }
+
+    /**
+     * lien pour afficher toutes les cotisations
      * @Route("cotisations", name="cotisations")
      */
     function listeCotisations(DataBaseService $dataBaseService): Response
@@ -117,8 +139,9 @@ class CompteController extends CompteService
             $inscription->setMembre($membre);
             $inscription->setCreatedAt(new \DateTime());
             $dataBaseService->save($inscription);
+
             $this->addFlash('success', 'Caisse crée avec succès !');
-            return $this->redirect('membres');
+            return $this->redirectToRoute('membres');
         } else {
             $this->addFlash('erreur', 'Remplissez votre formulaire, ne laissez aucun vide !');
             return $this->redirect('nouveauCompte');
@@ -186,13 +209,13 @@ class CompteController extends CompteService
                 $compte->setSolde($name_of_form);
                 $dataBaseService->save($compte);
             } 
-            // elseif (!$compte) {
-            //     $compte = new Compte();
-            //     $compte->setCaisse($caisse);
-            //     $compte->setInscription($membre);
-            //     $compte->setSolde($name_of_form);
-            //     $dataBaseService->save($compte);
-            // }
+            elseif (!$compte) {
+                $compte = new Compte();
+                $compte->setCaisse($caisse);
+                $compte->setInscription($membre);
+                $compte->setSolde($name_of_form);
+                $dataBaseService->save($compte);
+            }
             else {
                 // dd($caisse_date);
                 foreach ($cotisation as $key => $value) {

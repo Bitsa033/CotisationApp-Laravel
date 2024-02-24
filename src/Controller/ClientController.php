@@ -10,18 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ClientController extends AbstractController
 {
-    /**
-     * lien qui affiche la liste des membres
-     * @Route("/", name="membres")
-     */
-    public function findAllData(ClientService $service): Response
-    {
-        // dd($d=$clients->readOneData(8));
-        return $this->render('client/index.html.twig', [
-            'comptes'=>$service->findAllData()
-        ]);
-    }
-
+    
     /**
      * lien pour enregistrer un client et son compte
      * @Route("insertClient", name="insertClient")
