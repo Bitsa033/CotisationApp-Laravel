@@ -179,13 +179,20 @@ class CompteController extends CompteService
                 $cotisation->setMontant($name_of_form);
                 $cotisation->setCreatedAt(new \DateTime());
                 $dataBaseService->save($cotisation);
-            } 
-            elseif (!$compte) {
+
                 $compte = new Compte();
                 $compte->setCaisse($caisse);
                 $compte->setInscription($membre);
                 $compte->setSolde($name_of_form);
-            }
+                $dataBaseService->save($compte);
+            } 
+            // elseif (!$compte) {
+            //     $compte = new Compte();
+            //     $compte->setCaisse($caisse);
+            //     $compte->setInscription($membre);
+            //     $compte->setSolde($name_of_form);
+            //     $dataBaseService->save($compte);
+            // }
             else {
                 // dd($caisse_date);
                 foreach ($cotisation as $key => $value) {
