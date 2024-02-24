@@ -114,7 +114,7 @@ class CompteController extends CompteService
               
         }
         else {
-            $this->addFlash('erreur','Remplissez votre formulaire !');
+            $this->addFlash('erreur','Remplissez votre formulaire, ne laissez aucun vide !');
             return $this->redirect('nouveauCompte');
         }
 
@@ -138,7 +138,7 @@ class CompteController extends CompteService
               
         }
         else {
-            $this->addFlash('erreur','Remplissez votre formulaire !');
+            $this->addFlash('erreur','Remplissez votre formulaire, ne laissez aucun vide !');
             return $this->redirect('nouveauCompte');
         }
 
@@ -157,18 +157,36 @@ class CompteController extends CompteService
         
         $size_of_form=sizeof($request->request);
         for ($i=1; $i <=$size_of_form ; $i++) { 
-            $cotisation = new Cotisation();
             $name_of_form=$request->request->get("montant{$i}");
             $caisse = $dataBaseService->caisseRepository->find($i);
-            $cotisation->setInscription($membre);
-            $cotisation->setCaisse($caisse);
-            $cotisation->setMontant($name_of_form);
-            $cotisation->setCreatedAt(new \DateTime());
-            $dataBaseService->save($cotisation);
+            $cotisation = $dataBaseService->cotisationRepository->findBy([
+            'caisse'=>$caisse,
+            'inscription'=>$membre,
+            'created_at'=>new \DateTime()
+            ]);
+            if (!$cotisation) {
+                // dd('vide');
+                $cotisation = new Cotisation();
+                $cotisation->setInscription($membre);
+                $cotisation->setCaisse($caisse);
+                $cotisation->setMontant($name_of_form);
+                $cotisation->setCreatedAt(new \DateTime());
+                $dataBaseService->save($cotisation);
+            }
+            else {
+                // dd($caisse_date);
+                foreach ($cotisation as $key => $value) {
+                    $cmontant_courant= $value->getMontant();
+                    $montant_actuel=$cmontant_courant + $name_of_form;
+                    $value->setMontant($montant_actuel);
+                    $dataBaseService->db->flush();
+                }
+                
+            }
         }
 
         $this->addFlash('success',"Dépot éffectué");
-        return $this->redirectToRoute("membres");
+        return $this->redirectToRoute("crediterCompte");
         // return new Response();
     }
 

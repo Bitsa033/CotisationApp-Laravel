@@ -23,14 +23,12 @@
                 <td>{{row.createdAt|date("d/m/Y")}}</td>
                 <td>
                     <a class=" btn btn-info col-md-12" href="{{path('crediterCompte',{id:row.id})}}">Consulter</a>
-                    {# <a class=" btn btn-info" href="{{path('debiterCompte',{id:row.id})}}">Débiter le compte</a>
-                    <a class=" btn btn-dark" href="{{path('transfererArgent',{id:row.id})}}">Transférer de l'argent</a> #}
                 </td>
             </tr>
                 
             {% else %}
             <tr>
-                <td colspan="3">La lite est vide ...</td>
+                <td colspan="5">La liste est vide ...</td>
             </tr> 
             {% endfor %}
         </table>

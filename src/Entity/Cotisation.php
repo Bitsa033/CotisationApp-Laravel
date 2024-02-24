@@ -18,7 +18,7 @@ class Cotisation
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $created_at;
 
