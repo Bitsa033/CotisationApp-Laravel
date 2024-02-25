@@ -96,18 +96,22 @@ class BackController extends CompteService
     {
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
         $post_montant = $request->request->get('montant');
-        $post_num_compte_receveur = $request->request->get('num_compte_receveur');
-        $compteReceveur_array = $dataBaseService->caisseRepository->findBy(['id' => $post_num_compte_receveur]);
-
-        foreach ($compteReceveur_array as $key => $value) {
-
-            $id_compte_rec = $value->getId();
-            $this->virerMontant($id_compte_courant, $post_montant, $id_compte_rec);
-        }
-
-        return $this->json([
-            'message' => 'Ok, Transfert effectué avec success',
-            'icon' => 'success',
+        $post_contact_receveur = $request->request->get('contact');
+        $post_nom_caisse = $request->request->get('nom_caisse');
+        $compteReceveur_array = $dataBaseService->membreRepository->findBy([
+            'contact' => $post_contact_receveur
         ]);
+        return $compteReceveur_array;
+
+        // foreach ($compteReceveur_array as $key => $value) {
+
+        //     $id_compte_rec = $value->getId();
+        //     $this->virerMontant($id_compte_courant, $post_montant, $id_compte_rec);
+        // }
+
+        // return $this->json([
+        //     'message' => 'Ok, Transfert effectué avec success',
+        //     'icon' => 'success',
+        // ]);
     }
 }

@@ -5,7 +5,13 @@
     <div class="col-md-5">
         <table class="table">
             <tr>
-                <th>Nom</th>
+                <th>
+                    {% if app.session.get('id_compte_courant') %}
+                        <div class=" alert alert-primary text-center">
+                            Membre courant: {{membre.membre.nom}}
+                        </div>
+                    {% endif %}
+                </th>
                 <th></th>
             </tr>
             {% for row in inscriptions %}

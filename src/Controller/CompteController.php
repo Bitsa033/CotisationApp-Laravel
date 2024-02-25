@@ -84,12 +84,18 @@ class CompteController extends CompteService
      */
     function crediterCompte(Request $request, DataBaseService $dataBaseService, SessionInterface $sessionInterface): Response
     {
+        $inscription=null;
         $get_id_compte_courant = $request->query->get("id");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
+        $membre=$sessionInterface->get('id_compte_courant');
+        if ($membre) {
+            $inscription=$dataBaseService->inscriptionRepository->find($membre);
+        }
 
         return $this->render("compte/crediterCompte.html.twig", [
             'caisses' => $dataBaseService->caisseRepository->findAll(),
-            'inscriptions' => $dataBaseService->inscriptionRepository->findAll()
+            'inscriptions' => $dataBaseService->inscriptionRepository->findAll(),
+            'membre'=>$inscription
         ]);
     }
 
@@ -99,11 +105,17 @@ class CompteController extends CompteService
      */
     function debiterCompte(Request $request, SessionInterface $sessionInterface, DataBaseService $dataBaseService): Response
     {
+        $inscription=null;
         $get_id_compte_courant = $request->query->get("id");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
+        $membre=$sessionInterface->get('id_compte_courant');
+        if ($membre) {
+            $inscription=$dataBaseService->inscriptionRepository->find($membre);
+        }
 
         return $this->render("compte/debiterCompte.html.twig", [
-            'inscriptions' => $dataBaseService->inscriptionRepository->findAll()
+            'inscriptions' => $dataBaseService->inscriptionRepository->findAll(),
+            'membre'=>$inscription
         ]);
     }
 
@@ -113,11 +125,17 @@ class CompteController extends CompteService
      */
     function transfererArgent(Request $request, SessionInterface $sessionInterface, DataBaseService $dataBaseService): Response
     {
+        $inscription=null;
         $get_id_compte_courant = $request->query->get("id");
         $sessionInterface->set("id_compte_courant", $get_id_compte_courant);
+        $membre=$sessionInterface->get('id_compte_courant');
+        if ($membre) {
+            $inscription=$dataBaseService->inscriptionRepository->find($membre);
+        }
 
         return $this->render("compte/transfererMontant.html.twig", [
-            'inscriptions' => $dataBaseService->inscriptionRepository->findAll()
+            'inscriptions' => $dataBaseService->inscriptionRepository->findAll(),
+            'membre'=>$inscription
         ]);
     }
 
@@ -140,7 +158,7 @@ class CompteController extends CompteService
             $inscription->setCreatedAt(new \DateTime());
             $dataBaseService->save($inscription);
 
-            $this->addFlash('success', 'Caisse crée avec succès !');
+            $this->addFlash('success', 'Membre crée avec succès !');
             return $this->redirectToRoute('membres');
         } else {
             $this->addFlash('erreur', 'Remplissez votre formulaire, ne laissez aucun vide !');
@@ -314,9 +332,11 @@ class CompteController extends CompteService
         Session $sessionInterface,
         DataBaseService $dataBaseService
     ) {
-        $backController->virerArgent($request, $sessionInterface, $dataBaseService);
+        $exec=$backController->virerArgent($request, $sessionInterface, $dataBaseService);
 
-        $this->addFlash('success', "Transfert éffectué");
-        return $this->redirectToRoute("membres");
+        // $this->addFlash('success', "Transfert éffectué");
+        // return $this->redirectToRoute("membres");
+        dd($exec);
+        return new Response();
     }
 }
