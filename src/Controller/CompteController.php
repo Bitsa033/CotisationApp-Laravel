@@ -23,7 +23,7 @@ class CompteController extends CompteService
     {
         // dd($d=$clients->readOneData(8));
         return $this->render('client/index.html.twig', [
-            'comptes'=>$service->inscriptionRepository->findAll()
+            'comptes' => $service->inscriptionRepository->findAll()
         ]);
     }
 
@@ -162,6 +162,7 @@ class CompteController extends CompteService
             $caisse->setCode($code);
             $service->save($caisse);
             $this->addFlash('success', 'Caisse crée avec succès !');
+
             return $this->redirectToRoute('caisses');
         } else {
             $this->addFlash('erreur', 'Remplissez votre formulaire, ne laissez aucun vide !');
@@ -208,15 +209,13 @@ class CompteController extends CompteService
                 $compte->setInscription($membre);
                 $compte->setSolde($name_of_form);
                 $dataBaseService->save($compte);
-            } 
-            elseif (!$compte) {
+            } elseif (!$compte) {
                 $compte = new Compte();
                 $compte->setCaisse($caisse);
                 $compte->setInscription($membre);
                 $compte->setSolde($name_of_form);
                 $dataBaseService->save($compte);
-            }
-            else {
+            } else {
                 // dd($caisse_date);
                 foreach ($cotisation as $key => $value) {
                     $cmontant_courant = $value->getMontant();
@@ -226,8 +225,8 @@ class CompteController extends CompteService
                 }
 
                 foreach ($compte as $key => $value) {
-                    $solde_courant=$value->getSolde();
-                    $solde_actuel=$solde_courant + $name_of_form;
+                    $solde_courant = $value->getSolde();
+                    $solde_actuel = $solde_courant + $name_of_form;
                     $value->setSolde($solde_actuel);
                     $dataBaseService->db->flush();
                 }
@@ -243,18 +242,65 @@ class CompteController extends CompteService
      * lien pour débiter un compte
      * @Route("debiterCompteB", name="debiterCompteB")
      */
-    function debiterCompteB(
-        Request $request,
-        BackController $backController,
-        SessionInterface $sessionInterface,
+    function debiterCompteB(Request $request,BackController $backController,SessionInterface $sessionInterface,
         DataBaseService $dataBaseService
     ) {
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
+        $post_nom_caisse = $request->request->get('nom_caisse');
         $post_montant = $request->request->get('montant');
+        
+        if (!empty($id_compte_courant) && !empty($post_montant)) {
+            $membre = $dataBaseService->inscriptionRepository->find($id_compte_courant);
+            $caisse=$dataBaseService->caisseRepository->findBy(['nom'=>$post_nom_caisse]);
+            $compte = $dataBaseService->compteRepository->findBy([
+                'caisse' => $caisse,
+                'inscription' => $membre,
+            ]);
 
-        $backController->retraitCompte($id_compte_courant, $post_montant, $dataBaseService);
-        $this->addFlash('success', "Retrait éffectué");
-        return $this->redirect("membres");
+            foreach ($compte as $key => $value) {
+                $solde_courant= $value->getSolde();
+            }
+
+            if (!$caisse) {
+
+                $this->addFlash('erreur'," Cette caisse n\'existe pas dans notre base de données !");
+                // return $this->redirectToRoute("debiterCompte");
+                echo 'Cette caisse n\'existe pas dans notre base de données !';
+            } 
+            elseif (!$compte) {
+
+                $this->addFlash('erreur'," Le compte de ce membre est vide, rechargez-le et recommencez !");
+                // return $this->redirectToRoute("debiterCompte");
+                echo 'Le compte de ce membre est vide, rechargez-le et recommencez !';
+            } 
+            elseif ($solde_courant < $post_montant) {
+
+                $this->addFlash('erreur','Le solde est insuffisant, veuillez recharger le compte et recommencez !');
+                // return $this->redirectToRoute("debiterCompte");
+                // return new Response();
+                echo 'Le solde est insuffisant, veuillez recharger le compte et recommencez !';
+
+            } 
+            else {
+                
+                foreach ($compte as $key => $value) {
+                    $solde_courant= $value->getSolde();
+                    $solde_actuel= $solde_courant - $post_montant;
+                    $value->setSolde($solde_actuel);
+                    $dataBaseService->write();
+                }
+                $this->addFlash('success','Ok, Retrait effectué avec success');
+                // return $this->redirectToRoute("comptes");
+                // return new Response();
+                echo 'Ok, Retrait effectué avec success';
+            }
+            return new Response();
+        } 
+        else {
+            $this->addFlash('erreur' ,' Votre formulaire ne doit pas etre vide... Remplissez-le');
+            // return $this->redirectToRoute("debiterCompte");
+            echo 'form vide';
+        }
     }
 
 
@@ -271,6 +317,6 @@ class CompteController extends CompteService
         $backController->virerArgent($request, $sessionInterface, $dataBaseService);
 
         $this->addFlash('success', "Transfert éffectué");
-        return $this->redirect("membres");
+        return $this->redirectToRoute("membres");
     }
 }
