@@ -94,24 +94,70 @@ class BackController extends CompteService
      */
     function virerArgent(Request $request, SessionInterface $sessionInterface,DataBaseService $dataBaseService)
     {
+        $message='Ok, transfert éffectué !';
+        //on doit recuperer l'id de la table inscription pour l'envoyeur et le receveur
+        //on doit recuperer le montant à envoyer au receveur
+        //on doit recuperer la caisse à débiter pour l'envoyeur et celle à créditer pour le receveur
+        //on doit recuperer l'id du compte de l'envoyeur et du receveur selon la caisse et le membre
+        //on doit débiter la caisse de l'envoyeur  et créditer celle du receveur
+        //......................................................................................
+
+        //on récupere l'id de la table inscription pour l'envoyeur
         $id_compte_courant = $sessionInterface->get("id_compte_courant");
-        $post_montant = $request->request->get('montant');
+        $envoyeur=$dataBaseService->inscriptionRepository->find($id_compte_courant);
+        //on récupere l'id de la table inscription pour le receveur
         $post_contact_receveur = $request->request->get('contact');
-        $post_nom_caisse = $request->request->get('nom_caisse');
         $compteReceveur_array = $dataBaseService->membreRepository->findBy([
             'contact' => $post_contact_receveur
         ]);
-        return $compteReceveur_array;
 
-        // foreach ($compteReceveur_array as $key => $value) {
+        foreach ($compteReceveur_array as $key => $value) {
+            $id_membre=$value->getId();
+        }
 
-        //     $id_compte_rec = $value->getId();
-        //     $this->virerMontant($id_compte_courant, $post_montant, $id_compte_rec);
-        // }
+        $receveur=$dataBaseService->inscriptionRepository->find($id_membre);
+        //on récupere le montant à envoyer au receveur
+        $post_montant = $request->request->get('montant');
+        //on recupere la caisse à débiter pour l'envoyeur et celle à créditer pour le receveur
+        $post_nom_caisse = $request->request->get('nom_caisse');
+        $caisse_array = $dataBaseService->caisseRepository->findBy([
+            'nom' => $post_nom_caisse
+        ]);
 
-        // return $this->json([
-        //     'message' => 'Ok, Transfert effectué avec success',
-        //     'icon' => 'success',
-        // ]);
+        foreach ($caisse_array as $key => $value) {
+            $id_caisse=$value->getId();
+        }
+
+        //on recupere l'id du compte de l'envoyeur selon la caisse et le membre
+        $compte_envoyeur_array=$dataBaseService->compteRepository->findBy([
+            'caisse'=>$id_caisse,
+            'inscription'=>$envoyeur
+        ]);
+
+        //on débite la caisse de l'envoyeur
+        foreach ($compte_envoyeur_array as $key => $value) {
+            $solde_caisse=$value->getSolde();
+            $retrait=$solde_caisse - $post_montant;
+            $value->setSolde($retrait);
+            $dataBaseService->write();
+
+        }
+
+        //on recupere l'id du compte du receveur selon la caisse et le membre
+        $compte_receveur_array=$dataBaseService->compteRepository->findBy([
+            'caisse'=>$id_caisse,
+            'inscription'=>$receveur
+        ]);
+        //on crédite la caisse du receveur
+        foreach ($compte_receveur_array as $key => $value) {
+            $solde_caisse=$value->getSolde();
+            $depot=$solde_caisse + $post_montant;
+            $value->setSolde($depot);
+            $dataBaseService->write();
+        }
+
+        return $message;
+
+        
     }
 }
