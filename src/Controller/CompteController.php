@@ -204,12 +204,12 @@ class CompteController extends CompteService
                 $cotisation->setCreatedAt(new \DateTime());
                 $dataBaseService->save($cotisation);
 
-                $compte = new Compte();
-                $compte->setCaisse($caisse);
-                $compte->setInscription($membre);
-                $compte->setSolde($name_of_form);
-                $dataBaseService->save($compte);
-            } elseif (!$compte) {
+                // $compte = new Compte();
+                // $compte->setCaisse($caisse);
+                // $compte->setInscription($membre);
+                // $compte->setSolde($name_of_form);
+                // $dataBaseService->save($compte);
+            } if (!$compte) {
                 $compte = new Compte();
                 $compte->setCaisse($caisse);
                 $compte->setInscription($membre);
@@ -290,9 +290,9 @@ class CompteController extends CompteService
                     $dataBaseService->write();
                 }
                 $this->addFlash('success','Ok, Retrait effectué avec success');
-                // return $this->redirectToRoute("comptes");
+                return $this->redirectToRoute("comptes");
                 // return new Response();
-                echo 'Ok, Retrait effectué avec success';
+                // echo 'Ok, Retrait effectué avec success';
             }
             return new Response();
         } 
